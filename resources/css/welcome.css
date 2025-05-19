@@ -1,15 +1,11 @@
-body {
-    background: #F5F3FF;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .card {
     border-radius: 18px;
     box-shadow: 0 8px 32px 0 rgba(139, 92, 246, 0.10);
-    min-width: 320px;
+    max-width: 600px;
+    background: #F5F3FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-violet {
@@ -26,5 +22,15 @@ body {
     color: #8B5CF6;
     font-size: 2.5rem;
     font-weight: 600;
-    letter-spacing: 1px;
+}
+
+.welcome-content {
+    height: 100%;
+}
+
+body {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
 }

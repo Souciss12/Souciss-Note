@@ -10,7 +10,7 @@ class NoteFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->sentence(),
+            'title' => fake()->word(2),
             'content' => fake()->paragraph(3, true),
             'user_id' => User::factory(),
             'folder_id' => null, // Folder::factory(),
