@@ -20,6 +20,31 @@ class NoteController extends Controller
         return view('note.index', ['notes' => $notes, 'folders' => $folders]);
     }
 
+    public function getContent(string $id)
+    {
+        $note = Note::where('id', $id)
+            ->where('user_id', Auth::user()->id)
+            ->firstOrFail();
+
+        return response()->json([
+            'id' => $note->id,
+            'title' => $note->title,
+            'content' => $note->content,
+            'created_at' => $note->created_at,
+            'updated_at' => $note->updated_at
+        ]);
+    }
+
+    public function updateContent(Request $request, string $id)
+    {
+        $note = Note::where('id', $id)
+            ->where('user_id', Auth::user()->id)
+            ->firstOrFail();
+
+        $note->content = $request->input('content');
+        $note->save();
+    }
+
     /**
      * Show the form for creating a new resource.
      */

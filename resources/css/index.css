@@ -2,6 +2,10 @@
     height: 100%;
 }
 
+.options {
+    height: 100%;
+}
+
 .row-options {
     height: 39px;
 }
@@ -14,4 +18,8 @@
 
 .row-arbo {
     flex: 1;
+}
+
+.note-bg {
+    background-color: #F3F2F8;
 }

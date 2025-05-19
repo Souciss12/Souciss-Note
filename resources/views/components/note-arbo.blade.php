@@ -144,6 +144,29 @@
                 const noteId = this.dataset.noteId;
                 if (noteId) {
                     localStorage.setItem('active_note', noteId);
+
+                    fetch(`/notes/${noteId}/content`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const noteTitle = document.querySelector(
+                                '.note-content-header');
+                            if (noteTitle) {
+                                noteTitle.innerHTML = `
+                                    <h2>${data.title}</h2>
+                                `;
+                            }
+                            const noteContent = document.querySelector(
+                                '.note-content-body');
+                            if (noteContent) {
+                                noteContent.value = data.content;
+                                if (window.easymde) {
+                                    window.easymde.value(data.content);
+                                }
+                            }
+
+                        })
+                        .catch(error => console.error('Erreur lors du chargement de la note:',
+                            error));
                 }
             });
         });

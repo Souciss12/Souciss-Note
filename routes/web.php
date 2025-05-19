@@ -19,5 +19,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/note', [NoteController::class, 'index'])->name('note.index')->middleware(['auth']);
+Route::get('/notes/{id}/content', [NoteController::class, 'getContent'])->name('note.content')->middleware(['auth']);
+Route::post('/notes/{id}/update-content', [NoteController::class, 'updateContent'])->name('note.update-content')->middleware(['auth']);
 
 require __DIR__ . '/auth.php';
