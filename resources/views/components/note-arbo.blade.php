@@ -10,7 +10,7 @@
 
     {{-- Notes sans dossiers --}}
     @foreach ($notes->where('folder_id', null) as $note)
-        <div class="note">
+        <div class="note" data-note-id="{{ $note->id }}">
             <span class="file-icon">📄</span>
             <span>{{ $note->title }}</span>
         </div>
@@ -18,31 +18,128 @@
 </div>
 
 <style>
-    .folder,
-    .note {
-        padding: 5px;
+    .note-arbo {
+        padding: 10px;
+        background-color: #F5F3FF;
+        min-height: 100%;
+        min-width: 100%;
+    }
+
+    .folder {
+        padding: 2px 0px 2px 0px;
         margin: 2px 0;
         border-radius: 4px;
     }
 
-    .folder:hover,
-    .note:hover {
-        background-color: #f5f5f5;
+    .note {
+        padding: 2px 0px 2px 0px;
+        margin: 2px 0;
+        border-radius: 4px;
     }
 
     .folder-content {
-        margin-left: 20px;
-        border-left: 1px dashed #ccc;
-        padding-left: 10px;
+        margin-left: 6px;
+        padding-left: 6px;
+    }
+
+    .note:hover {
+        cursor: pointer;
     }
 
     .folder-icon,
     .file-icon {
-        margin-right: 5px;
+        margin-right: 3px;
     }
 
     .folder-name,
     .note-name {
         cursor: pointer;
     }
+
+    .active {
+        background-color: #A78BFA;
+        color: #F5F3FF;
+    }
+
+    .folder-header {
+        display: flex;
+        justify-content: space-between;
+    }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const folderHeaders = document.querySelectorAll('.folder-header');
+
+        function restoreFolderStates() {
+            const folders = document.querySelectorAll('.folder');
+            folders.forEach(folder => {
+                const icon = folder.querySelector('.open-icon');
+                const folderName = folder.querySelector('.folder-name').textContent.trim();
+                const folderId = 'folder_' + folderName;
+                const folderContent = folder.querySelector('.folder-content');
+
+                const isOpen = localStorage.getItem(folderId) === 'open';
+
+                if (folderContent && isOpen) {
+                    folderContent.style.display = 'block';
+                    icon.classList.remove('bi-caret-right');
+                    icon.classList.add('bi-caret-down');
+                }
+            });
+        }
+
+        function restoreActiveNote() {
+            const activeNoteId = localStorage.getItem('active_note');
+            if (activeNoteId) {
+                const note = document.querySelector(`.note[data-note-id="${activeNoteId}"]`);
+                if (note) {
+                    note.classList.add('active');
+                }
+            }
+        }
+
+        restoreFolderStates();
+        restoreActiveNote();
+
+        folderHeaders.forEach(header => {
+            header.addEventListener('click', function(e) {
+                const folder = this.closest('.folder');
+                const icon = this.querySelector('.open-icon');
+                const folderName = this.querySelector('.folder-name').textContent.trim();
+                const folderId = 'folder_' + folderName;
+                const folderContent = folder.querySelector('.folder-content');
+
+                const isCurrentlyOpen = folderContent.style.display !== 'none';
+
+                if (!isCurrentlyOpen) {
+                    icon.classList.remove('bi-caret-right');
+                    icon.classList.add('bi-caret-down');
+                } else {
+                    icon.classList.remove('bi-caret-down');
+                    icon.classList.add('bi-caret-right');
+                }
+
+                if (folderContent) {
+                    const isCurrentlyOpen = folderContent.style.display !== 'none';
+                    folderContent.style.display = isCurrentlyOpen ? 'none' : 'block';
+
+                    localStorage.setItem(folderId, isCurrentlyOpen ? 'closed' : 'open');
+                }
+            });
+        });
+
+        const notes = document.querySelectorAll('.note');
+        notes.forEach(note => {
+            note.addEventListener('click', function(e) {
+                notes.forEach(n => n.classList.remove('active'));
+                this.classList.add('active');
+
+                const noteId = this.dataset.noteId;
+                if (noteId) {
+                    localStorage.setItem('active_note', noteId);
+                }
+            });
+        });
+    });
+</script>

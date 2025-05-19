@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Folder;
 use App\Models\Note;
+use App\Models\Folder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
@@ -13,8 +14,8 @@ class NoteController extends Controller
      */
     public function index()
     {
-        $notes = Note::all();
-        $folders = Folder::all();
+        $notes = Note::where('user_id', Auth::user()->id)->get();
+        $folders = Folder::where('user_id', Auth::user()->id)->get();
 
         return view('note.index', ['notes' => $notes, 'folders' => $folders]);
     }

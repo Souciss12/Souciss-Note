@@ -1,11 +1,13 @@
 <div class="folder">
     <div class="folder-header">
-        <span class="folder-icon">📁</span>
-        <span class="folder-name">{{ $folder->name }}</span>
+        <div class="folder-name">
+            <span class="folder-icon">📁</span>
+            <span class="folder-name">{{ $folder->name }}</span>
+        </div>
+        <span class="open-icon bi bi-caret-right"></span>
     </div>
 
-    <div class="folder-content">
-        {{-- Afficher les sous-dossiers de ce dossier --}}
+    <div class="folder-content" style="display: none;">
         @foreach ($folders->where('parent_id', $folder->id) as $subfolder)
             @include('components.folder-item', [
                 'folder' => $subfolder,
@@ -14,9 +16,8 @@
             ])
         @endforeach
 
-        {{-- Afficher les notes de ce dossier --}}
         @foreach ($notes->where('folder_id', $folder->id) as $note)
-            <div class="note">
+            <div class="note" data-note-id="{{ $note->id }}">
                 <span class="file-icon">📄</span>
                 <span class="note-name">{{ $note->title }}</span>
             </div>

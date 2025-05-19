@@ -13,7 +13,7 @@
                     @if (Route::has('login'))
                         <div class="d-flex justify-content-center gap-3">
                             @auth
-                                <a href="{{ route('dashboard') }}" class="btn btn-violet px-4">Mon tableau de bord</a>
+                                <a href="{{ route('note.index') }}" class="btn btn-violet px-4">Mes notes</a>
                             @else
                                 <a href="{{ route('login') }}" class="btn btn-violet px-4">Login</a>
                                 @if (Route::has('register'))
