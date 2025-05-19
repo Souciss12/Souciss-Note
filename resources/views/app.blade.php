@@ -6,13 +6,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     @include('partials/styles')
+    @vite(['resources/css/app.css'])
 </head>
 
 <body>
     @include('partials/header')
-    <main>
-        @yield('content')
-    </main>
+    @yield('content')
     @include('partials/script')
 </body>
 

@@ -23,6 +23,7 @@
         background-color: #F5F3FF;
         min-height: 100%;
         min-width: 100%;
+        color: #1F2937;
     }
 
     .folder {
@@ -32,7 +33,7 @@
     }
 
     .note {
-        padding: 2px 0px 2px 0px;
+        padding: 2px 0px 2px 5px;
         margin: 2px 0;
         border-radius: 4px;
     }
@@ -42,8 +43,11 @@
         padding-left: 6px;
     }
 
-    .note:hover {
+    .note:hover,
+    .folder-header:hover {
         cursor: pointer;
+        background-color: #DDD6FE;
+        color: #1F2937;
     }
 
     .folder-icon,
@@ -63,6 +67,8 @@
 
     .folder-header {
         display: flex;
+        border-radius: 4px;
+        padding: 2px 2px 2px 2px;
         justify-content: space-between;
     }
 </style>
