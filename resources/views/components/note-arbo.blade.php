@@ -24,6 +24,8 @@
         min-height: 100%;
         min-width: 100%;
         color: #1F2937;
+        border-right: 2px solid #A3A3A3;
+        border-top: 2px solid #A3A3A3;
     }
 
     .folder {
@@ -102,6 +104,29 @@
                 if (note) {
                     note.classList.add('active');
                 }
+
+                fetch(`/notes/${activeNoteId}/content`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const noteTitle = document.querySelector(
+                            '.note-content-header');
+                        if (noteTitle) {
+                            noteTitle.innerHTML = `
+                                    <h2 class="fw-semibold">${data.title}</h2>
+                                `;
+                        }
+                        const noteContent = document.querySelector(
+                            '.note-content-body');
+                        if (noteContent) {
+                            noteContent.value = data.content;
+                            if (window.easymde) {
+                                window.easymde.value(data.content);
+                            }
+                        }
+
+                    })
+                    .catch(error => console.error('Erreur lors du chargement de la note:',
+                        error));
             }
         }
 
@@ -152,7 +177,7 @@
                                 '.note-content-header');
                             if (noteTitle) {
                                 noteTitle.innerHTML = `
-                                    <h2>${data.title}</h2>
+                                    <h2 class="fw-semibold">${data.title}</h2>
                                 `;
                             }
                             const noteContent = document.querySelector(
