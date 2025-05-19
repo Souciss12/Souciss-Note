@@ -5,12 +5,12 @@
         <div class="row g-0 row-options">
             <div class="col-2">
                 <div class="note-content bg-danger">
-                    content
+                    Recherche
                 </div>
             </div>
             <div class="col-10">
                 <div class="note-content bg-info">
-                    content
+                    Barre d'outils
                 </div>
             </div>
         </div>
@@ -20,7 +20,7 @@
             </div>
             <div class="col-10">
                 <div class="note-content bg-primary">
-                    content
+                    Contenu
                 </div>
             </div>
         </div>
