@@ -25,7 +25,13 @@
                             <span class="file-icon">📄</span>
                             <span class="note-name">{{ $note->title }}</span>
                         </div>
-                        <a class="btn-delete-note bi bi-trash-fill"></a>
+                        <form id="arbo-delete-note-form" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-delete-note">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -83,8 +83,7 @@
     display: none;
 }
 
-.folder-header:hover .btn-delete-folder,
-.active .btn-delete-folder {
+.folder-header:hover .btn-delete-folder {
     display: inline-block;
 }
 
@@ -97,16 +96,26 @@
     text-align: center;
     align-content: center;
     font-size: 0.9em;
-    margin-right: 4px;
+    margin-right: 8px;
     color: #1F2937;
     display: none;
+    border: none;
 }
 
-.note:hover .btn-delete-note,
-.note.active .btn-delete-note {
+.note:hover .btn-delete-note {
     display: inline-block;
 }
 
 .btn-delete-note:hover {
     color: #A78BFA;
+}
+
+#arbo-delete-note-form {
+    margin: 0px;
+    padding: 0px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

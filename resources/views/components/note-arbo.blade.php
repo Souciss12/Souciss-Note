@@ -8,10 +8,24 @@
             'notes' => $notes,
         ])
     @endforeach
-    @foreach ($notes->where('folder_id', null) as $note)
-        <div class="note" data-note-id="{{ $note->id }}">
-            <span class="file-icon">📄</span>
-            <span>{{ $note->title }}</span>
+
+    @foreach ($notes->where('folder_id', $folder->id) as $note)
+        <div class="note-header">
+            <div class="note" data-note-id="{{ $note->id }}">
+                <div class="note-header">
+                    <div>
+                        <span class="file-icon">📄</span>
+                        <span class="note-name">{{ $note->title }}</span>
+                    </div>
+                    <form id="arbo-delete-note-form" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-delete-note">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     @endforeach
 </div>
@@ -120,5 +134,26 @@
                 }
             });
         });
+
+        const deleteForm = document.getElementById('arbo-delete-note-form');
+
+        updateDeleteFormAction();
+
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'active_note') {
+                updateDeleteFormAction();
+            }
+        });
+
+        document.addEventListener('click', function() {
+            updateDeleteFormAction();
+        });
+
+        function updateDeleteFormAction() {
+            const activeNoteId = localStorage.getItem('active_note');
+            if (activeNoteId) {
+                deleteForm.action = `/notes/${activeNoteId}`;
+            }
+        }
     });
 </script>
