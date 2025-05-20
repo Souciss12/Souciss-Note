@@ -1,5 +1,6 @@
+@vite(['resources/css/note-arbo.css'])
+
 <div class="note-arbo">
-    {{-- Dossiers racines --}}
     @foreach ($folders->where('parent_id', null) as $folder)
         @include('components.folder-item', [
             'folder' => $folder,
@@ -7,8 +8,6 @@
             'notes' => $notes,
         ])
     @endforeach
-
-    {{-- Notes sans dossiers --}}
     @foreach ($notes->where('folder_id', null) as $note)
         <div class="note" data-note-id="{{ $note->id }}">
             <span class="file-icon">📄</span>
@@ -16,74 +15,6 @@
         </div>
     @endforeach
 </div>
-
-<style>
-    .note-arbo {
-        padding: 0px 10px 10px 10px;
-        max-height: calc(100vh - 78px);
-        min-width: 100%;
-        color: #1F2937;
-        overflow: scroll;
-        overflow-x: hidden;
-
-        scrollbar-width: thin;
-        scrollbar-color: #DDD6FE #F5F3FF;
-    }
-
-    .folder {
-        padding: 2px 0px 2px 0px;
-        margin: 2px 0;
-        border-radius: 4px;
-    }
-
-    .note {
-        padding: 2px 0px 2px 5px;
-        margin: 2px 0;
-        border-radius: 4px;
-    }
-
-    .folder-content {
-        margin-left: 6px;
-        padding-left: 6px;
-    }
-
-    .note:hover,
-    .folder-header:hover {
-        cursor: pointer;
-        background-color: #DDD6FE;
-        color: #1F2937;
-    }
-
-    .folder-icon,
-    .file-icon {
-        margin-right: 3px;
-    }
-
-    .folder-name,
-    .note-name {
-        cursor: pointer;
-    }
-
-    .active {
-        background-color: #A78BFA;
-        color: #F5F3FF;
-    }
-
-    .folder-header {
-        display: flex;
-        border-radius: 4px;
-        padding: 2px 2px 2px 2px;
-        justify-content: space-between;
-    }
-
-    .open-icon {
-        cursor: pointer;
-        margin-right: 5px;
-        text-align: center;
-        align-content: center;
-    }
-</style>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const folderHeaders = document.querySelectorAll('.folder-header');

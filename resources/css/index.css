@@ -30,6 +30,9 @@
 .arbo-bg {
     background-color: #F5F3FF;
     border-right: 2px solid #A3A3A3;
-    border-top: 2px solid #A3A3A3;
+}
 
+.toolbar-bg {
+    background-color: #F5F3FF;
+    border-bottom: 2px solid #A3A3A3;
 }

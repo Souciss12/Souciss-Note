@@ -10,6 +10,8 @@ export default defineConfig({
                 'resources/css/welcome.css',
                 'resources/css/header.css',
                 'resources/css/index.css',
+                'resources/css/note-content.css',
+                'resources/css/note-arbo.css',
             ],
             refresh: true,
         }),

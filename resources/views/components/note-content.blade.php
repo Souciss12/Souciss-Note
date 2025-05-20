@@ -1,42 +1,9 @@
-<script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+@vite(['resources/css/note-content.css'])
+
 <div class="container note-content">
     <textarea class="note-content-header fw-semibold" id="note-content-header" data-note-id=""></textarea>
     <textarea class="note-content-body" id="note-content-body" data-note-id=""></textarea>
 </div>
-
-<style>
-    .note-content {
-        background-color: #FFFFFF;
-        border-radius: 10px;
-        padding: 20px;
-    }
-
-    .note-content-header {
-        justify-content: center;
-        display: flex;
-        align-items: center;
-        text-align: center;
-        font-size: 24px;
-        margin-top: 10px;
-        width: 100%;
-        border: none;
-        outline: none;
-        resize: none;
-    }
-
-    .note-content-body {
-        width: 100%;
-        height: calc(100vh - 230px);
-        border: none;
-        outline: none;
-        resize: none;
-        padding: 10px;
-        border-radius: 8px;
-        scrollbar-color: #DDD6FE #FFFFFF;
-        scrollbar-width: thin;
-    }
-</style>
 <script>
     function updateNoteContentNoteId() {
         const textarea = document.getElementById('note-content-body');

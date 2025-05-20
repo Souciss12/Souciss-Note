@@ -8,10 +8,8 @@
                     Recherche
                 </div>
             </div>
-            <div class="col-10">
-                <div class="options bg-info">
-                    Barre d'outils
-                </div>
+            <div class="col-10 toolbar-bg">
+                <x-note-toolbar />
             </div>
         </div>
         <div class="row g-0 row-arbo">
