@@ -13,12 +13,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory(10)->create()->each(function ($user) {
-            $folders = Folder::factory(rand(1, 3))->create([
+            $folders = Folder::factory(rand(10, 20))->create([
                 'user_id' => $user->id,
             ]);
 
             foreach ($folders as $folder) {
-                Note::factory(rand(2, 5))->create([
+                Note::factory(rand(5, 15))->create([
                     'user_id' => $user->id,
                     'folder_id' => $folder->id,
                 ]);

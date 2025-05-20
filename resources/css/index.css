@@ -18,8 +18,18 @@
 
 .row-arbo {
     flex: 1;
+    max-height: calc(100vh - 78px);
 }
 
 .note-bg {
     background-color: #F3F2F8;
+    padding: 15px 0px 15px 0px;
+    max-height: 100%;
+}
+
+.arbo-bg {
+    background-color: #F5F3FF;
+    border-right: 2px solid #A3A3A3;
+    border-top: 2px solid #A3A3A3;
+
 }

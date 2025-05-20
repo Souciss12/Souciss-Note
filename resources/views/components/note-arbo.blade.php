@@ -19,13 +19,15 @@
 
 <style>
     .note-arbo {
-        padding: 10px;
-        background-color: #F5F3FF;
-        min-height: 100%;
+        padding: 0px 10px 10px 10px;
+        max-height: calc(100vh - 78px);
         min-width: 100%;
         color: #1F2937;
-        border-right: 2px solid #A3A3A3;
-        border-top: 2px solid #A3A3A3;
+        overflow: scroll;
+        overflow-x: hidden;
+
+        scrollbar-width: thin;
+        scrollbar-color: #DDD6FE #F5F3FF;
     }
 
     .folder {
@@ -73,6 +75,13 @@
         padding: 2px 2px 2px 2px;
         justify-content: space-between;
     }
+
+    .open-icon {
+        cursor: pointer;
+        margin-right: 5px;
+        text-align: center;
+        align-content: center;
+    }
 </style>
 
 <script>
@@ -108,25 +117,16 @@
                 fetch(`/notes/${activeNoteId}/content`)
                     .then(response => response.json())
                     .then(data => {
-                        const noteTitle = document.querySelector(
-                            '.note-content-header');
+                        const noteTitle = document.querySelector('.note-content-header');
                         if (noteTitle) {
-                            noteTitle.innerHTML = `
-                                    <h2 class="fw-semibold">${data.title}</h2>
-                                `;
+                            noteTitle.value = data.title;
                         }
-                        const noteContent = document.querySelector(
-                            '.note-content-body');
+                        const noteContent = document.querySelector('.note-content-body');
                         if (noteContent) {
                             noteContent.value = data.content;
-                            if (window.easymde) {
-                                window.easymde.value(data.content);
-                            }
                         }
-
                     })
-                    .catch(error => console.error('Erreur lors du chargement de la note:',
-                        error));
+                    .catch(error => console.error('Erreur lors du chargement de la note:', error));
             }
         }
 
@@ -176,19 +176,13 @@
                             const noteTitle = document.querySelector(
                                 '.note-content-header');
                             if (noteTitle) {
-                                noteTitle.innerHTML = `
-                                    <h2 class="fw-semibold">${data.title}</h2>
-                                `;
+                                noteTitle.value = data.title;
                             }
                             const noteContent = document.querySelector(
                                 '.note-content-body');
                             if (noteContent) {
                                 noteContent.value = data.content;
-                                if (window.easymde) {
-                                    window.easymde.value(data.content);
-                                }
                             }
-
                         })
                         .catch(error => console.error('Erreur lors du chargement de la note:',
                             error));

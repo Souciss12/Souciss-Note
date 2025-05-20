@@ -45,6 +45,16 @@ class NoteController extends Controller
         $note->save();
     }
 
+    public function updateTitle(Request $request, string $id)
+    {
+        $note = Note::where('id', $id)
+            ->where('user_id', Auth::user()->id)
+            ->firstOrFail();
+
+        $note->title = $request->input('title');
+        $note->save();
+    }
+
     /**
      * Show the form for creating a new resource.
      */
