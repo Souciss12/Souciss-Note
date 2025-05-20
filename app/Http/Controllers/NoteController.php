@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $notes = Note::where('user_id', Auth::user()->id)->get();
@@ -55,9 +52,12 @@ class NoteController extends Controller
         $note->save();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function destroy(Note $note)
+    {
+        $note->delete();
+        return response()->json(['success' => true]);
+    }
+
     public function create()
     {
         //
@@ -93,19 +93,5 @@ class NoteController extends Controller
     public function update(Request $request, string $id)
     {
         //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $note = Note::where('id', $id)
-            ->where('user_id', Auth::user()->id)
-            ->firstOrFail();
-
-        $note->delete();
-        return redirect()->route('note.index')
-            ->with('success', "Element deleted successfully");
     }
 }

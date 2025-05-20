@@ -1,6 +1,6 @@
 @vite(['resources/css/note-arbo.css'])
 
-<div class="note-arbo">
+<div class="note-arbo" tabindex="0">
     @foreach ($folders->where('parent_id', null) as $folder)
         @include('components.folder-item', [
             'folder' => $folder,
@@ -10,21 +10,20 @@
     @endforeach
 
     @foreach ($notes->where('folder_id', $folder->id) as $note)
-        <div class="note-header">
-            <div class="note" data-note-id="{{ $note->id }}">
-                <div class="note-header">
-                    <div>
-                        <span class="file-icon">📄</span>
-                        <span class="note-name">{{ $note->title }}</span>
-                    </div>
-                    <form id="arbo-delete-note-form" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-delete-note">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </form>
+        <div class="note" data-note-id="{{ $note->id }}">
+            <div class="note-header">
+                <div>
+                    <span class="file-icon">📄</span>
+                    <span class="note-name">{{ $note->title }}</span>
                 </div>
+                <form class="arbo-delete-note-form" method="POST" action="{{ route('note.destroy', $note->id) }}"
+                    data-note-id="{{ $note->id }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-delete-note">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </form>
             </div>
         </div>
     @endforeach
@@ -135,25 +134,50 @@
             });
         });
 
-        const deleteForm = document.getElementById('arbo-delete-note-form');
+        const deleteForms = document.querySelectorAll('.arbo-delete-note-form');
 
-        updateDeleteFormAction();
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
 
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'active_note') {
-                updateDeleteFormAction();
-            }
+                const noteId = this.dataset.noteId;
+
+                if (confirm("Voulez-vous vraiment supprimer cette note ?")) {
+                    fetch(`/notes/${noteId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': this.querySelector('[name="_token"]').value,
+                                'Content-Type': 'application/json',
+                            },
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                this.closest('.note').remove();
+                            } else {
+                                alert('Échec de la suppression.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erreur de suppression :', error);
+                        });
+                }
+            });
         });
 
-        document.addEventListener('click', function() {
-            updateDeleteFormAction();
-        });
-
-        function updateDeleteFormAction() {
-            const activeNoteId = localStorage.getItem('active_note');
-            if (activeNoteId) {
-                deleteForm.action = `/notes/${activeNoteId}`;
+        const noteArbo = document.querySelector('.note-arbo');
+        noteArbo.addEventListener('keydown', function(e) {
+            if (e.key === 'Delete') {
+                const activeNote = document.querySelector('.note.active');
+                if (activeNote) {
+                    const deleteForm = activeNote.querySelector('.arbo-delete-note-form');
+                    if (deleteForm) {
+                        deleteForm.dispatchEvent(new Event('submit', {
+                            cancelable: true,
+                            bubbles: true
+                        }));
+                    }
+                }
             }
-        }
+        });
     });
 </script>

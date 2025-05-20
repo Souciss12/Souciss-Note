@@ -22,7 +22,7 @@ Route::get('/note', [NoteController::class, 'index'])->name('note.index')->middl
 Route::get('/notes/{id}/content', [NoteController::class, 'getContent'])->name('note.content')->middleware(['auth']);
 Route::post('/notes/{id}/update-content', [NoteController::class, 'updateContent'])->name('note.update-content')->middleware(['auth']);
 Route::post('/notes/{id}/update-title', [NoteController::class, 'updateTitle'])->name('note.update-title')->middleware(['auth']);
-Route::delete('/notes/{id}', [NoteController::class, 'destroy'])->name('note.destroy')->middleware(['auth']);
+Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->name('note.destroy')->middleware(['auth']);
 
 
 require __DIR__ . '/auth.php';

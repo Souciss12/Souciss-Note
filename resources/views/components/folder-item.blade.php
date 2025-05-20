@@ -18,21 +18,20 @@
         @endforeach
 
         @foreach ($notes->where('folder_id', $folder->id) as $note)
-            <div class="note-header">
-                <div class="note" data-note-id="{{ $note->id }}">
-                    <div class="note-header">
-                        <div>
-                            <span class="file-icon">📄</span>
-                            <span class="note-name">{{ $note->title }}</span>
-                        </div>
-                        <form id="arbo-delete-note-form" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-delete-note">
-                                <i class="bi bi-trash-fill"></i>
-                            </button>
-                        </form>
+            <div class="note" data-note-id="{{ $note->id }}">
+                <div class="note-header">
+                    <div>
+                        <span class="file-icon">📄</span>
+                        <span class="note-name">{{ $note->title }}</span>
                     </div>
+                    <form class="arbo-delete-note-form" method="POST" data-note-id="{{ $note->id }}"
+                        action="{{ route('note.destroy', $note->id) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-delete-note">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         @endforeach
