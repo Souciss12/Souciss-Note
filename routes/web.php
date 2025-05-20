@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\NoteController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NoteController;
+use App\Http\Controllers\FolderController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,5 +25,6 @@ Route::post('/notes/{id}/update-content', [NoteController::class, 'updateContent
 Route::post('/notes/{id}/update-title', [NoteController::class, 'updateTitle'])->name('note.update-title')->middleware(['auth']);
 Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->name('note.destroy')->middleware(['auth']);
 
+Route::delete('/folders/{folder}', [FolderController::class, 'destroy'])->name('folder.destroy')->middleware(['auth']);
 
 require __DIR__ . '/auth.php';

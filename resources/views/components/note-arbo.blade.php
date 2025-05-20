@@ -9,7 +9,7 @@
         ])
     @endforeach
 
-    @foreach ($notes->where('folder_id', $folder->id) as $note)
+    @foreach ($notes->where('folder_id', null) as $note)
         <div class="note" data-note-id="{{ $note->id }}">
             <div class="note-header">
                 <div>
@@ -134,9 +134,9 @@
             });
         });
 
-        const deleteForms = document.querySelectorAll('.arbo-delete-note-form');
+        const deleteNoteForms = document.querySelectorAll('.arbo-delete-note-form');
 
-        deleteForms.forEach(form => {
+        deleteNoteForms.forEach(form => {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
 
@@ -179,5 +179,50 @@
                 }
             }
         });
+
+        const deleteFolderForms = document.querySelectorAll('.arbo-delete-folder-form');
+
+        deleteFolderForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const folderId = this.dataset.folderId;
+
+                if (confirm("Voulez-vous vraiment supprimer cette note ?")) {
+                    fetch(`/folders/${folderId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': this.querySelector('[name="_token"]').value,
+                                'Content-Type': 'application/json',
+                            },
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                this.closest('.folder').remove();
+                            } else {
+                                alert('Échec de la suppression.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erreur de suppression :', error);
+                        });
+                }
+            });
+        });
+
+        // noteArbo.addEventListener('keydown', function(e) {
+        //     if (e.key === 'Delete') {
+        //         const activeNote = document.querySelector('.note.active');
+        //         if (activeNote) {
+        //             const deleteForm = activeNote.querySelector('.arbo-delete-note-form');
+        //             if (deleteForm) {
+        //                 deleteForm.dispatchEvent(new Event('submit', {
+        //                     cancelable: true,
+        //                     bubbles: true
+        //                 }));
+        //             }
+        //         }
+        //     }
+        // });
     });
 </script>

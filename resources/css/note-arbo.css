@@ -83,15 +83,18 @@
     display: none;
 }
 
-.folder-header:hover .btn-delete-folder {
+.folder-header:hover .btn-delete-folder,
+.note:hover .btn-delete-note {
     display: inline-block;
 }
 
-.btn-delete-folder:hover {
+.btn-delete-folder:hover,
+.btn-delete-note:hover {
     color: #A78BFA;
 }
 
-.btn-delete-note {
+.btn-delete-note,
+.btn-note-form {
     cursor: pointer;
     text-align: center;
     align-content: center;
@@ -102,15 +105,8 @@
     border: none;
 }
 
-.note:hover .btn-delete-note {
-    display: inline-block;
-}
-
-.btn-delete-note:hover {
-    color: #A78BFA;
-}
-
-.arbo-delete-note-form {
+.arbo-delete-note-form,
+.arbo-delete-folder-form {
     margin: 0px;
     padding: 0px;
     width: 24px;
