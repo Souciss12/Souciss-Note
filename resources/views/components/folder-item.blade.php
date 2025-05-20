@@ -1,5 +1,5 @@
-<div class="folder">
-    <div class="folder-header">
+<div class="folder" data-folder-id="{{ $folder->id }}">
+    <div class="folder-header" draggable="true" data-type="folder" data-id="{{ $folder->id }}">
         <div class="folder-name">
             <span class="open-icon bi bi-caret-right"></span>
             <span class="folder-icon">📁</span>
@@ -26,7 +26,7 @@
 
         @foreach ($notes->where('folder_id', $folder->id) as $note)
             <div class="note" data-note-id="{{ $note->id }}">
-                <div class="note-header">
+                <div class="note-header" draggable="true" data-type="note" data-id="{{ $note->id }}">
                     <div>
                         <span class="file-icon">📄</span>
                         <span class="note-name">{{ $note->title }}</span>

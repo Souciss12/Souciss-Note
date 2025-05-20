@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Note;
 use App\Models\Folder;
 use Illuminate\Http\Request;
 
@@ -52,9 +53,30 @@ class FolderController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    public function move(Request $request)
+    {
+        $type = $request->input('type');
+        $id = $request->input('id');
+        $targetFolderId = $request->input('target_folder_id');
+
+        if ($type === 'note') {
+            $note = Note::find($id);
+            if ($note) {
+                $note->folder_id = $targetFolderId;
+                $note->save();
+                return response()->json(['success' => true]);
+            }
+        } elseif ($type === 'folder') {
+            $folder = Folder::find($id);
+            if ($folder) {
+                $folder->parent_id = $targetFolderId;
+                $folder->save();
+                return response()->json(['success' => true]);
+            }
+        }
+        return response()->json(['success' => false], 400);
+    }
+
     public function destroy(Folder $folder)
     {
         // Supprimer récursivement les sous-dossiers et leurs notes

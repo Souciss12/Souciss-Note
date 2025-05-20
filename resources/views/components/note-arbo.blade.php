@@ -11,7 +11,7 @@
 
     @foreach ($notes->where('folder_id', null) as $note)
         <div class="note" data-note-id="{{ $note->id }}">
-            <div class="note-header">
+            <div class="note-header" draggable="true" data-type="note" data-id="{{ $note->id }}">
                 <div>
                     <span class="file-icon">📄</span>
                     <span class="note-name">{{ $note->title }}</span>
@@ -27,6 +27,10 @@
             </div>
         </div>
     @endforeach
+
+    <div id="root-drop-zone" class="root-drop-zone" data-folder-id="">
+        Drop here to root
+    </div>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -224,5 +228,92 @@
         //         }
         //     }
         // });
+
+        document.querySelectorAll('.note-header, .folder-header').forEach(item => {
+            item.addEventListener('dragstart', function(e) {
+                e.dataTransfer.setData('type', this.dataset.type);
+                e.dataTransfer.setData('id', this.dataset.id);
+            });
+        });
+
+        document.querySelectorAll('.folder-header').forEach(folder => {
+            folder.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('drag-over');
+            });
+            folder.addEventListener('dragleave', function(e) {
+                this.classList.remove('drag-over');
+            });
+            folder.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('drag-over');
+                const type = e.dataTransfer.getData('type');
+                const id = e.dataTransfer.getData('id');
+                const targetFolderId = this.dataset.id;
+
+                fetch('/move', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector(
+                                'meta[name="csrf-token"]').content,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            type: type,
+                            id: id,
+                            target_folder_id: targetFolderId
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            location
+                                .reload();
+                        } else {
+                            alert('Erreur lors du déplacement');
+                        }
+                    });
+            });
+        });
+
+        const arboBg = document.getElementById('root-drop-zone');
+
+        arboBg.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('drag-over');
+        });
+        arboBg.addEventListener('dragleave', function(e) {
+            this.classList.remove('drag-over');
+        });
+        arboBg.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+            const type = e.dataTransfer.getData('type');
+            const id = e.dataTransfer.getData('id');
+            const targetFolderId = this.dataset.id;
+
+            fetch('/move', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector(
+                            'meta[name="csrf-token"]').content,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        type: type,
+                        id: id,
+                        target_folder_id: targetFolderId
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        location
+                            .reload();
+                    } else {
+                        alert('Erreur lors du déplacement');
+                    }
+                });
+        });
     });
 </script>

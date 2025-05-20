@@ -115,3 +115,15 @@
     justify-content: center;
     align-items: center;
 }
+
+.note[draggable="true"],
+.folder[draggable="true"] {
+    cursor: grab;
+}
+
+.root-drop-zone {
+    padding: 10px;
+    text-align: center;
+    color: #888;
+    cursor: default;
+}
