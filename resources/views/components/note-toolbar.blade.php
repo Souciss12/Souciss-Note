@@ -4,7 +4,7 @@
             <i class="bi bi-copy"></i>
         </button>
         <button class="btn btn-toolbar" id="clear-content-btn">
-            <i class="bi bi-tornado"></i>
+            <i class="bi bi-eraser-fill"></i>
         </button>
         <form id="delete-note-form" method="POST">
             @csrf
