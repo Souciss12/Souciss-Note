@@ -100,6 +100,12 @@ class NoteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $note = Note::where('id', $id)
+            ->where('user_id', Auth::user()->id)
+            ->firstOrFail();
+
+        $note->delete();
+        return redirect()->route('note.index')
+            ->with('success', "Element deleted successfully");
     }
 }
