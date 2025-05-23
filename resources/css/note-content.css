@@ -17,7 +17,7 @@
     resize: none;
 }
 
-.note-content-body {
+/* .note-content-body {
     width: 100%;
     height: calc(100vh - 230px);
     border: none;
@@ -25,6 +25,78 @@
     resize: none;
     padding: 10px;
     border-radius: 8px;
+} */
+
+.EasyMDEContainer,
+.CodeMirror,
+.editor-toolbar,
+.editor-preview,
+.editor-statusbar {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.EasyMDEContainer,
+.CodeMirror,
+.editor-preview,
+.editor-statusbar {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.editor-toolbar {
+    padding: 4px 6px !important;
+    height: auto !important;
+    line-height: 1.2 !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 4px;
+    overflow-x: auto !important;
+    background: transparent;
+    border: none;
+
+}
+
+.editor-toolbar button {
+    padding: 4px 6px !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+    height: auto !important;
+    background: #DDD6FE !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    max-width: 32px;
+    width: auto !important;
+}
+
+.CodeMirror-scroll {
+    height: calc(100vh - 280px) !important;
+}
+
+.CodeMirror-vscrollbar {
     scrollbar-color: #DDD6FE #FFFFFF;
     scrollbar-width: thin;
+}
+
+.cm-header {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.cm-strong {
+    font-weight: bold;
+}
+
+.cm-em {
+    font-style: italic;
+}
+
+.cm-quote {
+    font-style: italic;
+    color: #999;
+    border-left: 4px solid #ccc;
+    padding-left: 10px;
 }

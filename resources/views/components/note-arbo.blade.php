@@ -79,9 +79,13 @@
                         if (noteTitle) {
                             noteTitle.value = data.title;
                         }
-                        const noteContent = document.querySelector('.note-content-body');
-                        if (noteContent) {
-                            noteContent.value = data.content;
+                        if (window.setNoteContentBody) {
+                            window.setNoteContentBody(data.content);
+                        } else {
+                            const noteContent = document.querySelector('.note-content-body');
+                            if (noteContent) {
+                                noteContent.value = data.content;
+                            }
                         }
                     })
                     .catch(error => console.error('Erreur lors du chargement de la note:', error));
@@ -136,10 +140,14 @@
                             if (noteTitle) {
                                 noteTitle.value = data.title;
                             }
-                            const noteContent = document.querySelector(
-                                '.note-content-body');
-                            if (noteContent) {
-                                noteContent.value = data.content;
+                            if (window.setNoteContentBody) {
+                                window.setNoteContentBody(data.content);
+                            } else {
+                                const noteContent = document.querySelector(
+                                    '.note-content-body');
+                                if (noteContent) {
+                                    noteContent.value = data.content;
+                                }
                             }
                         })
                         .catch(error => console.error('Erreur lors du chargement de la note:',
@@ -234,6 +242,7 @@
                                         const noteContent = document.querySelector(
                                             '.note-content-body');
                                         if (noteContent) noteContent.value = '';
+
                                     }
                                 }
                                 folderElem.remove();

@@ -21,10 +21,24 @@
         }
     }
 
+    let easyMDE;
     document.addEventListener('DOMContentLoaded', function() {
-        const textarea = document.getElementById('note-content-body');
+        easyMDE = new EasyMDE({
+            element: document.getElementById('note-content-body'),
+            spellChecker: false,
+            status: false,
+            toolbar: ["bold", "italic", "heading", "|", "unordered-list", "ordered-list", "|",
+                "link", "image", "table", "|", "guide", "preview"
+            ],
+            maxHeight: '200px',
+            renderingConfig: {
+                codeSyntaxHighlighting: true
+            },
+        });
+
         updateNoteContentNoteId();
-        textarea.addEventListener('input', function() {
+        easyMDE.codemirror.on('change', function() {
+            const textarea = document.getElementById('note-content-body');
             const currentNoteId = textarea.getAttribute('data-note-id');
             if (!currentNoteId) return;
             fetch(`/notes/${currentNoteId}/update-content`, {
@@ -34,7 +48,7 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 body: JSON.stringify({
-                    content: textarea.value
+                    content: easyMDE.value()
                 })
             });
         });
@@ -78,4 +92,12 @@
             updateNoteTitleNoteId();
         });
     });
+
+    window.setNoteContentBody = function(content) {
+        if (easyMDE) {
+            easyMDE.value(content || '');
+        } else {
+            document.getElementById('note-content-body').value = content || '';
+        }
+    };
 </script>
