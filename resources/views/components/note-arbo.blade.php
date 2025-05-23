@@ -32,6 +32,16 @@
         Drop here to root
     </div>
 </div>
+<div id="context-menu" class="context-menu add-menu">
+    <div class="context-menu-item add-menu-item d-flex" data-action="add-folder">
+        <div class="add-folder-icon">📁</div>
+        <div>New folder</div>
+    </div>
+    <div class="context-menu-item add-menu-item d-flex" data-action="add-note">
+        <div class="add-note-icon">📄</div>
+        <div>New note</div>
+    </div>
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const folderHeaders = document.querySelectorAll('.folder-header');
@@ -156,7 +166,17 @@
                         })
                         .then(response => {
                             if (response.ok) {
-                                this.closest('.note').remove();
+                                const noteElem = this.closest('.note');
+                                if (noteElem.classList.contains('active')) {
+                                    localStorage.removeItem('active_note');
+                                    const noteTitle = document.querySelector(
+                                        '.note-content-header');
+                                    if (noteTitle) noteTitle.value = '';
+                                    const noteContent = document.querySelector(
+                                        '.note-content-body');
+                                    if (noteContent) noteContent.value = '';
+                                }
+                                noteElem.remove();
                             } else {
                                 alert('Échec de la suppression.');
                             }
@@ -202,7 +222,21 @@
                         })
                         .then(response => {
                             if (response.ok) {
-                                this.closest('.folder').remove();
+                                const folderElem = this.closest('.folder');
+                                const activeNoteId = localStorage.getItem('active_note');
+                                if (activeNoteId) {
+                                    if (folderElem.querySelector(
+                                            `.note[data-note-id="${activeNoteId}"]`)) {
+                                        localStorage.removeItem('active_note');
+                                        const noteTitle = document.querySelector(
+                                            '.note-content-header');
+                                        if (noteTitle) noteTitle.value = '';
+                                        const noteContent = document.querySelector(
+                                            '.note-content-body');
+                                        if (noteContent) noteContent.value = '';
+                                    }
+                                }
+                                folderElem.remove();
                             } else {
                                 alert('Échec de la suppression.');
                             }
@@ -213,21 +247,6 @@
                 }
             });
         });
-
-        // noteArbo.addEventListener('keydown', function(e) {
-        //     if (e.key === 'Delete') {
-        //         const activeNote = document.querySelector('.note.active');
-        //         if (activeNote) {
-        //             const deleteForm = activeNote.querySelector('.arbo-delete-note-form');
-        //             if (deleteForm) {
-        //                 deleteForm.dispatchEvent(new Event('submit', {
-        //                     cancelable: true,
-        //                     bubbles: true
-        //                 }));
-        //             }
-        //         }
-        //     }
-        // });
 
         document.querySelectorAll('.note-header, .folder-header').forEach(item => {
             item.addEventListener('dragstart', function(e) {
@@ -314,6 +333,91 @@
                         alert('Erreur lors du déplacement');
                     }
                 });
+        });
+
+        const contextMenu = document.getElementById('context-menu');
+        let contextMenuTarget = null;
+
+        document.querySelectorAll('.add-icon').forEach(icon => {
+            icon.addEventListener('click', function(e) {
+                e.stopPropagation();
+                contextMenuTarget = this;
+                const rect = this.getBoundingClientRect();
+                contextMenu.style.left = rect.left + window.scrollX + 'px';
+                contextMenu.style.top = rect.bottom + window.scrollY + 'px';
+                contextMenu.style.display = 'block';
+            });
+        });
+
+        contextMenu.querySelectorAll('.context-menu-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                const action = this.dataset.action;
+                let parentFolderId = null;
+
+                if (contextMenuTarget) {
+                    const folderHeader = contextMenuTarget.closest('.folder-header');
+                    if (folderHeader) {
+                        parentFolderId = folderHeader.dataset.id;
+                    }
+                }
+
+                if (action === 'add-folder') {
+                    const folderName = prompt('Folder name:', 'New folder');
+                    if (folderName) {
+                        fetch('/folders', {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]').content,
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    name: folderName,
+                                    parent_id: parentFolderId
+                                })
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.success) {
+                                    location.reload();
+                                } else {
+                                    alert('Error while creating folder');
+                                }
+                            });
+                    }
+                } else if (action === 'add-note') {
+                    const noteTitle = prompt('Note title:', 'New note');
+                    if (noteTitle) {
+                        fetch('/notes', {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]').content,
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    title: noteTitle,
+                                    folder_id: parentFolderId
+                                })
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.success) {
+                                    location.reload();
+                                } else {
+                                    alert('Error while creating note');
+
+                                }
+                            });
+                    }
+                }
+
+                contextMenu.style.display = 'none';
+            });
+        });
+
+        document.addEventListener('click', function() {
+            contextMenu.style.display = 'none';
         });
     });
 </script>

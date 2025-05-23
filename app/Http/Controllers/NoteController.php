@@ -68,7 +68,17 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $note = new Note();
+        $note->title = $request->input('title', 'Nouvelle note');
+        $note->content = $request->input('content', '');
+        $note->folder_id = $request->input('folder_id');
+        $note->user_id = Auth::user()->id;
+        $note->save();
+
+        return response()->json([
+            'success' => true,
+            'note' => $note
+        ]);
     }
 
     /**

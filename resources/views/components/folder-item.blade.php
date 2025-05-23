@@ -5,14 +5,17 @@
             <span class="folder-icon">📁</span>
             <span class="folder-name">{{ $folder->name }}</span>
         </div>
-        <form class="arbo-delete-folder-form" method="POST" data-folder-id="{{ $folder->id }}"
-            action="{{ route('folder.destroy', $folder->id) }}">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-delete-folder">
-                <i class="bi bi-trash-fill"></i>
-            </button>
-        </form>
+        <div class="d-flex">
+            <span class="add-icon bi bi-plus-square"></span>
+            <form class="arbo-delete-folder-form" method="POST" data-folder-id="{{ $folder->id }}"
+                action="{{ route('folder.destroy', $folder->id) }}">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-delete-folder">
+                    <i class="bi bi-trash-fill"></i>
+                </button>
+            </form>
+        </div>
     </div>
 
     <div class="folder-content" style="display: none;">

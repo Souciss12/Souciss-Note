@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Note;
 use App\Models\Folder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FolderController extends Controller
 {
@@ -26,7 +27,16 @@ class FolderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $folder = new Folder();
+        $folder->name = $request->input('name', 'Nouveau dossier');
+        $folder->parent_id = $request->input('parent_id');
+        $folder->user_id = Auth::user()->id;
+        $folder->save();
+
+        return response()->json([
+            'success' => true,
+            'folder' => $folder
+        ]);
     }
 
     /**

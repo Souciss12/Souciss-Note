@@ -81,6 +81,7 @@
     margin-right: 2px;
     color: #1F2937;
     display: none;
+    border: none;
 }
 
 .folder-header:hover .btn-delete-folder,
@@ -116,6 +117,25 @@
     align-items: center;
 }
 
+.btn-delete-folder i,
+.btn-delete-note i {
+    font-size: 1em;
+    line-height: 1;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-delete-folder,
+.btn-delete-note {
+    width: 20px;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
 .note[draggable="true"],
 .folder[draggable="true"] {
     cursor: grab;
@@ -126,4 +146,61 @@
     text-align: center;
     color: #888;
     cursor: default;
+}
+
+.add-icon {
+    margin-right: 5px;
+    color: #1F2937;
+
+    cursor: pointer;
+    text-align: center;
+    align-content: center;
+    font-size: 0.9em;
+    display: none;
+}
+
+.add-icon:hover {
+    color: #A78BFA;
+}
+
+.folder-header:hover .add-icon,
+.note:hover .add-icon {
+    display: inline-block;
+}
+
+.context-menu {
+    padding: 3px;
+}
+
+.context-menu {
+    font-size: 0.85em;
+    box-shadow: 0 2px 8px #ddd;
+    padding: 3px;
+}
+
+.context-menu-item:hover {
+    background: #DDD6FE;
+    color: #1F2937;
+}
+
+.add-menu {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    background: #F5F3FF;
+    border-radius: 4px;
+    border: 1px solid #DDD6FE;
+    min-width: 120px;
+}
+
+.add-menu-item {
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.add-folder-icon,
+.add-note-icon {
+    width: 18px;
+    margin-right: 4px;
 }

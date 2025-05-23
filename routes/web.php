@@ -23,8 +23,10 @@ Route::get('/note', [NoteController::class, 'index'])->name('note.index')->middl
 Route::get('/notes/{id}/content', [NoteController::class, 'getContent'])->name('note.content')->middleware(['auth']);
 Route::post('/notes/{id}/update-content', [NoteController::class, 'updateContent'])->name('note.update-content')->middleware(['auth']);
 Route::post('/notes/{id}/update-title', [NoteController::class, 'updateTitle'])->name('note.update-title')->middleware(['auth']);
+Route::post('/notes', [NoteController::class, 'store'])->name('note.store')->middleware(['auth']);
 Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->name('note.destroy')->middleware(['auth']);
 
+Route::post('/folders', [FolderController::class, 'store'])->name('folder.store')->middleware(['auth']);
 Route::delete('/folders/{folder}', [FolderController::class, 'destroy'])->name('folder.destroy')->middleware(['auth']);
 Route::post('/move', [FolderController::class, 'move'])->name('folder.move')->middleware(['auth']);
 
