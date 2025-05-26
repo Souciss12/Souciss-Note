@@ -116,9 +116,14 @@
                 if (folderContent) {
                     const isCurrentlyOpen = folderContent.style.display !== 'none';
                     folderContent.style.display = isCurrentlyOpen ? 'none' : 'block';
-
                     localStorage.setItem(folderId, isCurrentlyOpen ? 'closed' : 'open');
                 }
+
+                document.querySelectorAll('.folder-header').forEach(h => h.classList.remove(
+                    'selected'));
+                this.classList.add('selected');
+                localStorage.setItem('active_folder', folderName);
+                localStorage.setItem('last_selected_type', 'folder');
             });
         });
 
@@ -131,6 +136,7 @@
                 const noteId = this.dataset.noteId;
                 if (noteId) {
                     localStorage.setItem('active_note', noteId);
+                    localStorage.setItem('last_selected_type', 'note');
 
                     fetch(`/notes/${noteId}/content`)
                         .then(response => response.json())
@@ -199,14 +205,32 @@
         const noteArbo = document.querySelector('.note-arbo');
         noteArbo.addEventListener('keydown', function(e) {
             if (e.key === 'Delete') {
-                const activeNote = document.querySelector('.note.active');
-                if (activeNote) {
-                    const deleteForm = activeNote.querySelector('.arbo-delete-note-form');
-                    if (deleteForm) {
-                        deleteForm.dispatchEvent(new Event('submit', {
-                            cancelable: true,
-                            bubbles: true
-                        }));
+                const lastType = localStorage.getItem('last_selected_type');
+                if (lastType === 'note') {
+                    const activeNote = document.querySelector('.note.active');
+                    if (activeNote) {
+                        const deleteForm = activeNote.querySelector('.arbo-delete-note-form');
+                        if (deleteForm) {
+                            deleteForm.dispatchEvent(new Event('submit', {
+                                cancelable: true,
+                                bubbles: true
+                            }));
+                            return;
+                        }
+                    }
+                } else if (lastType === 'folder') {
+                    const selectedFolderHeader = document.querySelector('.folder-header.selected');
+                    if (selectedFolderHeader) {
+                        const folder = selectedFolderHeader.closest('.folder');
+                        if (folder) {
+                            const deleteFolderForm = folder.querySelector('.arbo-delete-folder-form');
+                            if (deleteFolderForm) {
+                                deleteFolderForm.dispatchEvent(new Event('submit', {
+                                    cancelable: true,
+                                    bubbles: true
+                                }));
+                            }
+                        }
                     }
                 }
             }
