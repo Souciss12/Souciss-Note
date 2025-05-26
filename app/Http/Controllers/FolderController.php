@@ -60,7 +60,17 @@ class FolderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $folder = Folder::where('id', $id)
+            ->where('user_id', Auth::user()->id)
+            ->firstOrFail();
+
+        $folder->name = $request->input('name');
+        $folder->save();
+
+        return response()->json([
+            'success' => true,
+            'folder' => $folder
+        ]);
     }
 
     public function move(Request $request)

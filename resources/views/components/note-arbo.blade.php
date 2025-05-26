@@ -360,6 +360,40 @@
                             }
                         });
                 }
+            } else if (e.key === 'F2') {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const selectedFolderHeader = document.querySelector('.folder-header.selected');
+                if (selectedFolderHeader) {
+                    const folderName = prompt('Rename folder:', selectedFolderHeader.querySelector(
+                        '.folder-name .folder-name').textContent.trim());
+                    if (folderName) {
+                        const folderId = selectedFolderHeader.dataset.id;
+                        fetch(`/folders/${folderId}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]').content,
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    name: folderName
+                                })
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.success) {
+                                    selectedFolderHeader.querySelector('.folder-name .folder-name')
+                                        .textContent = folderName;
+                                    localStorage.setItem('active_folder', folderName);
+                                    localStorage.setItem('last_selected_type', 'folder');
+                                } else {
+                                    alert('Error while renaming folder');
+                                }
+                            });
+                    }
+                }
             }
         });
 

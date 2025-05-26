@@ -25,5 +25,6 @@ Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->name('note.d
 Route::post('/folders', [FolderController::class, 'store'])->name('folder.store')->middleware(['auth']);
 Route::delete('/folders/{folder}', [FolderController::class, 'destroy'])->name('folder.destroy')->middleware(['auth']);
 Route::post('/move', [FolderController::class, 'move'])->name('folder.move')->middleware(['auth']);
+Route::put('/folders/{folder}', [FolderController::class, 'update'])->name('folder.update')->middleware(['auth']);
 
 require __DIR__ . '/auth.php';
