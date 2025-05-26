@@ -5,7 +5,7 @@
         <div class="row g-0 row-options">
             <div class="col-2">
                 <div class="search-bg">
-
+                    <x-note-search />
                 </div>
             </div>
             <div class="col-10 toolbar-bg">

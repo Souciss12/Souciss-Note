@@ -33,12 +33,12 @@
 
     .btn-toolbar {
         background-color: #A78BFA;
-        margin-left: 15px;
+        margin-left: 10px;
         border: none;
         color: #F5F3FF;
-        font-size: 1.1rem;
-        height: 31px;
-        width: 31px;
+        font-size: 1rem;
+        height: 26px;
+        width: 26px;
         display: flex;
         justify-content: center;
         align-items: center;

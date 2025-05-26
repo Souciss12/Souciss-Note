@@ -358,6 +358,17 @@
             });
         });
 
+        document.querySelectorAll('.add-icon-root').forEach(icon => {
+            icon.addEventListener('click', function(e) {
+                e.stopPropagation();
+                contextMenuTarget = this;
+                const rect = this.getBoundingClientRect();
+                contextMenu.style.left = rect.left + window.scrollX + 'px';
+                contextMenu.style.top = rect.bottom + window.scrollY + 'px';
+                contextMenu.style.display = 'block';
+            });
+        });
+
         contextMenu.querySelectorAll('.context-menu-item').forEach(item => {
             item.addEventListener('click', function(e) {
                 const action = this.dataset.action;
