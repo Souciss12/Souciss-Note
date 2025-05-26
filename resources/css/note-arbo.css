@@ -204,3 +204,7 @@
     width: 18px;
     margin-right: 4px;
 }
+
+.note-arbo:focus {
+    outline: none;
+}
