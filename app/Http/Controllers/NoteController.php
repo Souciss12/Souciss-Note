@@ -102,6 +102,16 @@ class NoteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $note = Note::where('id', $id)
+            ->where('user_id', Auth::user()->id)
+            ->firstOrFail();
+
+        $note->title = $request->input('title');
+        $note->save();
+
+        return response()->json([
+            'success' => true,
+            'note' => $note
+        ]);
     }
 }

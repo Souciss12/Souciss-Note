@@ -364,34 +364,71 @@
                 e.preventDefault();
                 e.stopPropagation();
 
-                const selectedFolderHeader = document.querySelector('.folder-header.selected');
-                if (selectedFolderHeader) {
-                    const folderName = prompt('Rename folder:', selectedFolderHeader.querySelector(
-                        '.folder-name .folder-name').textContent.trim());
-                    if (folderName) {
-                        const folderId = selectedFolderHeader.dataset.id;
-                        fetch(`/folders/${folderId}`, {
-                                method: 'PUT',
-                                headers: {
-                                    'X-CSRF-TOKEN': document.querySelector(
-                                        'meta[name="csrf-token"]').content,
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    name: folderName
+                const lastType = localStorage.getItem('last_selected_type');
+                if (lastType === 'note') {
+                    const activeNote = document.querySelector('.note.active');
+                    if (activeNote) {
+                        const noteTitleInput = activeNote.querySelector('.note-name');
+                        if (noteTitleInput) {
+                            const noteTitle = prompt('Rename note:', noteTitleInput.textContent.trim());
+                            if (noteTitle) {
+                                const noteId = activeNote.dataset.noteId;
+                                fetch(`/notes/${noteId}`, {
+                                        method: 'PUT',
+                                        headers: {
+                                            'X-CSRF-TOKEN': document.querySelector(
+                                                'meta[name="csrf-token"]').content,
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({
+                                            title: noteTitle
+                                        })
+                                    })
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            noteTitleInput.textContent = noteTitle;
+                                            localStorage.setItem('active_note', noteId);
+                                            localStorage.setItem('last_selected_type', 'note');
+                                            location.reload();
+                                        } else {
+                                            alert('Error while renaming note');
+                                        }
+                                    });
+                            }
+                        }
+                    }
+                } else if (lastType === 'folder') {
+                    const selectedFolderHeader = document.querySelector('.folder-header.selected');
+                    if (selectedFolderHeader) {
+                        const folderName = prompt('Rename folder:', selectedFolderHeader.querySelector(
+                            '.folder-name .folder-name').textContent.trim());
+                        if (folderName) {
+                            const folderId = selectedFolderHeader.dataset.id;
+                            fetch(`/folders/${folderId}`, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector(
+                                            'meta[name="csrf-token"]').content,
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        name: folderName
+                                    })
                                 })
-                            })
-                            .then(res => res.json())
-                            .then(data => {
-                                if (data.success) {
-                                    selectedFolderHeader.querySelector('.folder-name .folder-name')
-                                        .textContent = folderName;
-                                    localStorage.setItem('active_folder', folderName);
-                                    localStorage.setItem('last_selected_type', 'folder');
-                                } else {
-                                    alert('Error while renaming folder');
-                                }
-                            });
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        selectedFolderHeader.querySelector(
+                                                '.folder-name .folder-name')
+                                            .textContent = folderName;
+                                        localStorage.setItem('active_folder', folderName);
+                                        localStorage.setItem('last_selected_type', 'folder');
+                                    } else {
+                                        alert('Error while renaming folder');
+                                    }
+                                });
+                        }
                     }
                 }
             }

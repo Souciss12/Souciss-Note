@@ -21,6 +21,7 @@ Route::post('/notes/{id}/update-content', [NoteController::class, 'updateContent
 Route::post('/notes/{id}/update-title', [NoteController::class, 'updateTitle'])->name('note.update-title')->middleware(['auth']);
 Route::post('/notes', [NoteController::class, 'store'])->name('note.store')->middleware(['auth']);
 Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->name('note.destroy')->middleware(['auth']);
+Route::put('/notes/{note}', [NoteController::class, 'update'])->name('note.update')->middleware(['auth']);
 
 Route::post('/folders', [FolderController::class, 'store'])->name('folder.store')->middleware(['auth']);
 Route::delete('/folders/{folder}', [FolderController::class, 'destroy'])->name('folder.destroy')->middleware(['auth']);
