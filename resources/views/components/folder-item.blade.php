@@ -1,7 +1,7 @@
 <div class="folder" data-folder-id="{{ $folder->id }}">
     <div class="folder-header" draggable="true" data-type="folder" data-id="{{ $folder->id }}">
         <div class="folder-name">
-            <span class="open-icon bi bi-caret-right"></span>
+            <span class="open-icon bi bi-chevron-right"></span>
             <span class="folder-icon">📁</span>
             <span class="folder-name">{{ $folder->name }}</span>
         </div>

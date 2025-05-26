@@ -8,7 +8,7 @@
                 @auth
                     <i class="paramètre bi bi-gear-fill" data-bs-toggle="dropdown" aria-expanded="false"></i>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="">Account</a></li>
+                        <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Account</a></li>
                         <li><a class="dropdown-item" href="">Settings</a></li>
                         <li>
                             <form class="dropdown-item" action="{{ route('logout') }}" method="POST">

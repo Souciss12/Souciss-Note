@@ -58,8 +58,8 @@
 
                 if (folderContent && isOpen) {
                     folderContent.style.display = 'block';
-                    icon.classList.remove('bi-caret-right');
-                    icon.classList.add('bi-caret-down');
+                    icon.classList.remove('bi-chevron-right');
+                    icon.classList.add('bi-chevron-down');
                 }
             });
         }
@@ -153,11 +153,11 @@
                 const isCurrentlyOpen = folderContent.style.display !== 'none';
 
                 if (!isCurrentlyOpen) {
-                    icon.classList.remove('bi-caret-right');
-                    icon.classList.add('bi-caret-down');
+                    icon.classList.remove('bi-chevron-right');
+                    icon.classList.add('bi-chevron-down');
                 } else {
-                    icon.classList.remove('bi-caret-down');
-                    icon.classList.add('bi-caret-right');
+                    icon.classList.remove('bi-chevron-down');
+                    icon.classList.add('bi-chevron-right');
                 }
 
                 if (folderContent) {
