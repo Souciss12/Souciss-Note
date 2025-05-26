@@ -11,8 +11,8 @@ class NoteController extends Controller
 {
     public function index()
     {
-        $notes = Note::where('user_id', Auth::user()->id)->get();
-        $folders = Folder::where('user_id', Auth::user()->id)->get();
+        $notes = Note::where('user_id', Auth::user()->id)->orderBy('title', 'asc')->get();
+        $folders = Folder::where('user_id', Auth::user()->id)->orderBy('name', 'asc')->get();
 
         return view('note.index', ['notes' => $notes, 'folders' => $folders]);
     }
