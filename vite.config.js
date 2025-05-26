@@ -12,6 +12,8 @@ export default defineConfig({
                 'resources/css/index.css',
                 'resources/css/note-content.css',
                 'resources/css/note-arbo.css',
+                'resources/css/note-search.css',
+                'resources/css/note-toolbar.css',
             ],
             refresh: true,
         }),
