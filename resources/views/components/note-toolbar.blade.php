@@ -1,5 +1,8 @@
 @vite(['resources/css/note-toolbar.css'])
 <div class="note-toolbar">
+    <div class="toolbar-url">
+        <span class="url">Url de la note</span>
+    </div>
     <div class="btns-toolbar">
         <button class="btn btn-toolbar" id="copy-content-btn">
             <i class="bi bi-copy"></i>
@@ -21,15 +24,18 @@
         const deleteForm = document.getElementById('delete-note-form');
 
         updateDeleteFormAction();
+        updateNoteUrl();
 
         window.addEventListener('storage', function(e) {
             if (e.key === 'active_note') {
                 updateDeleteFormAction();
+                updateNoteUrl();
             }
         });
 
         document.addEventListener('click', function() {
             updateDeleteFormAction();
+            updateNoteUrl();
         });
 
         function updateDeleteFormAction() {
@@ -37,6 +43,39 @@
             if (activeNoteId) {
                 deleteForm.action = `/notes/${activeNoteId}`;
             }
+        }
+
+        function updateNoteUrl() {
+            const activeNoteId = localStorage.getItem('active_note');
+            const urlSpan = document.querySelector('.toolbar-url .url');
+            if (!activeNoteId || !urlSpan) {
+                urlSpan.textContent = 'Url de la note';
+                return;
+            }
+
+            let noteElem = document.querySelector(`.note[data-note-id="${activeNoteId}"]`);
+            if (!noteElem) {
+                urlSpan.textContent = 'Url de la note';
+                return;
+            }
+
+            let path = [];
+            let parent = noteElem.closest('.folder');
+            while (parent) {
+                const folderHeader = parent.querySelector('.folder-header .folder-name');
+                if (folderHeader) {
+                    let name = folderHeader.textContent.trim();
+                    name = name.replace(/📁\s*/, '');
+                    path.unshift(name);
+                }
+                parent = parent.parentElement.closest('.folder');
+            }
+
+            const noteName = noteElem.querySelector('.note-name');
+            if (noteName) {
+                path.push(noteName.textContent.trim());
+            }
+            urlSpan.textContent = path.length ? path.join('/') : 'Url de la note';
         }
 
         const clearContentBtn = document.getElementById('clear-content-btn');

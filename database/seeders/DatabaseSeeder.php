@@ -29,7 +29,5 @@ class DatabaseSeeder extends Seeder
                 'folder_id' => null,
             ]);
         });
-
-        $tags = Tag::factory(10)->create();
     }
 }
