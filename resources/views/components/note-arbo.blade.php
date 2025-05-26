@@ -92,8 +92,55 @@
             }
         }
 
+        function restoreFolderSelection() {
+            const pendingFolderId = localStorage.getItem('pending_selection_folder_id');
+            console.log('Restoring folder selection, pending ID:', pendingFolderId);
+
+            if (pendingFolderId) {
+                const folderHeader = document.querySelector(`[data-id="${pendingFolderId}"]`);
+                console.log('Found folder header for ID:', pendingFolderId, folderHeader);
+
+                if (folderHeader && folderHeader.classList.contains('folder-header')) {
+                    document.querySelectorAll('.folder-header').forEach(h => h.classList.remove('selected'));
+
+                    folderHeader.classList.add('selected');
+
+                    const folderNameSpan = folderHeader.querySelector('.folder-name .folder-name');
+                    if (folderNameSpan) {
+                        const folderName = folderNameSpan.textContent.trim();
+                        localStorage.setItem('active_folder', folderName);
+                        localStorage.setItem('last_selected_type', 'folder');
+                        console.log('Selected folder:', folderName);
+                    }
+                }
+                localStorage.removeItem('pending_selection_folder_id');
+                return;
+            }
+
+            const activeFolderName = localStorage.getItem('active_folder');
+            if (activeFolderName) {
+                const folderHeaders = document.querySelectorAll('.folder-header');
+                folderHeaders.forEach(header => {
+                    const folderNameSpan = header.querySelector('.folder-name .folder-name');
+                    if (folderNameSpan) {
+                        const folderName = folderNameSpan.textContent.trim();
+                        if (folderName === activeFolderName) {
+                            header.classList.add('selected');
+                            console.log('Restored selection for folder:', folderName);
+                        }
+                    }
+                });
+            }
+        }
+
         restoreFolderStates();
         restoreActiveNote();
+        restoreFolderSelection();
+
+        const noteArbo = document.querySelector('.note-arbo');
+        if (noteArbo) {
+            noteArbo.focus();
+        }
 
         folderHeaders.forEach(header => {
             header.addEventListener('click', function(e) {
@@ -202,8 +249,7 @@
             });
         });
 
-        const noteArbo = document.querySelector('.note-arbo');
-        noteArbo.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function(e) {
             if (e.key === 'Delete') {
                 const lastType = localStorage.getItem('last_selected_type');
                 if (lastType === 'note') {
@@ -211,6 +257,7 @@
                     if (activeNote) {
                         const deleteForm = activeNote.querySelector('.arbo-delete-note-form');
                         if (deleteForm) {
+                            e.preventDefault();
                             deleteForm.dispatchEvent(new Event('submit', {
                                 cancelable: true,
                                 bubbles: true
@@ -225,6 +272,7 @@
                         if (folder) {
                             const deleteFolderForm = folder.querySelector('.arbo-delete-folder-form');
                             if (deleteFolderForm) {
+                                e.preventDefault();
                                 deleteFolderForm.dispatchEvent(new Event('submit', {
                                     cancelable: true,
                                     bubbles: true
@@ -232,6 +280,85 @@
                             }
                         }
                     }
+                }
+            } else if (e.ctrlKey && e.shiftKey && e.key === 'N') {
+                e.preventDefault();
+                e.stopPropagation();
+
+                let parentFolderId = null;
+                const selectedFolderHeader = document.querySelector('.folder-header.selected');
+                if (selectedFolderHeader) {
+                    parentFolderId = selectedFolderHeader.dataset.id;
+                }
+
+                const folderName = prompt('Folder name:', 'New folder');
+                if (folderName && folderName.trim()) {
+                    fetch('/folders', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').content,
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                name: folderName.trim(),
+                                parent_id: parentFolderId
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success && data.folder) {
+                                localStorage.setItem('active_folder', data.folder.name);
+                                localStorage.setItem('last_selected_type', 'folder');
+                                localStorage.setItem('pending_selection_folder_id', data.folder.id);
+                                location.reload();
+                            } else if (data.success) {
+                                location.reload();
+                            } else {
+                                alert('Error while creating folder');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error creating folder:', err);
+                            alert('Network error while creating folder');
+                        });
+                }
+            } else if (e.ctrlKey && e.shiftKey && e.key === 'M') {
+                e.preventDefault();
+                e.stopPropagation();
+
+                let parentFolderId = null;
+                const selectedFolderHeader = document.querySelector('.folder-header.selected');
+                if (selectedFolderHeader) {
+                    parentFolderId = selectedFolderHeader.dataset.id;
+                }
+
+                const noteTitle = prompt('Note title:', 'New note');
+                if (noteTitle) {
+                    fetch('/notes', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').content,
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                title: noteTitle,
+                                folder_id: parentFolderId
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success && data.note) {
+                                localStorage.setItem('active_note', data.note.id);
+                                localStorage.setItem('last_selected_type', 'note');
+                                location.reload();
+                            } else if (data.success) {
+                                location.reload();
+                            } else {
+                                alert('Error while creating note');
+                            }
+                        });
                 }
             }
         });
@@ -422,7 +549,13 @@
                             })
                             .then(res => res.json())
                             .then(data => {
-                                if (data.success) {
+                                if (data.success && data.folder) {
+                                    localStorage.setItem('active_folder', data.folder.name);
+                                    localStorage.setItem('last_selected_type', 'folder');
+                                    localStorage.setItem('pending_selection_folder_id', data
+                                        .folder.id);
+                                    location.reload();
+                                } else if (data.success) {
                                     location.reload();
                                 } else {
                                     alert('Error while creating folder');
