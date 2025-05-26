@@ -18,7 +18,7 @@
         <div class="row mb-5">
             <div class="col-6 text-start">
                 <a href="{{ route('note.index') }}" class="btn btn-violet px-4">
-                    ← Back to Notes
+                    Back to Notes
                 </a>
             </div>
             <div class="col-6">

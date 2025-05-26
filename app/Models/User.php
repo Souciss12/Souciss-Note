@@ -39,4 +39,18 @@ class User extends Authenticatable
     {
         return $this->hasMany(Folder::class, 'user_id');
     }
+
+    public function colors()
+    {
+        return $this->hasOne(Color::class, 'user_id');
+    }
+
+    public function getColors()
+    {
+        $colors = $this->colors;
+        if (!$colors) {
+            return Color::getDefaultColors();
+        }
+        return $colors->toArray();
+    }
 }
