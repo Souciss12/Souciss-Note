@@ -7,8 +7,7 @@
             <div class="col-md-8 col-lg-6">
                 <div class="card p-5 text-center">
                     <div class="souciss-title mb-2">SoucissNote</div>
-                    <div class="mb-4 text-secondary">L'application simple et moderne pour organiser toutes vos notes en
-                        Markdown.
+                    <div class="mb-4 text-secondary">A modern and user-friendly note-taking application with MarkDown
                     </div>
                     @if (Route::has('login'))
                         <div class="d-flex justify-content-center gap-3">
