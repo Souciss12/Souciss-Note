@@ -4,6 +4,141 @@
     padding: 20px;
 }
 
+/* Conteneur pour l'éditeur et la prévisualisation */
+.editor-container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.editor-wrapper {
+    flex: 1;
+    min-width: 0;
+    /* Permet au flex item de se rétrécir */
+}
+
+.preview-wrapper {
+    flex: 1;
+    min-width: 0;
+    border-left: 1px solid var(--hover-color);
+    padding-left: 15px;
+    margin-top: 30px;
+}
+
+/* Mode côte à côte activé */
+.editor-container.side-by-side-active .editor-wrapper {
+    flex: 1;
+}
+
+.editor-container.side-by-side-active .preview-wrapper {
+    flex: 1;
+    display: block !important;
+}
+
+/* Mode normal (par défaut) */
+.editor-container:not(.side-by-side-active) .editor-wrapper {
+    flex: 1;
+    width: 100%;
+}
+
+.editor-container:not(.side-by-side-active) .preview-wrapper {
+    display: none !important;
+}
+
+/* Styles pour la prévisualisation personnalisée */
+.custom-preview {
+    background-color: var(--background2-color);
+    color: var(--black-text-color);
+    padding: 10px;
+    border-radius: 8px;
+    height: calc(100vh - 250px);
+    /* Augmenté la hauteur de la preview */
+    overflow-y: auto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    scrollbar-color: var(--hover-color) var(--background2-color);
+    scrollbar-width: thin;
+}
+
+/* Scrollbar pour la custom preview */
+.custom-preview::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-preview::-webkit-scrollbar-track {
+    background: var(--background2-color);
+}
+
+.custom-preview::-webkit-scrollbar-thumb {
+    background: var(--hover-color);
+    border-radius: 4px;
+}
+
+.custom-preview::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+.custom-preview h1,
+.custom-preview h2,
+.custom-preview h3,
+.custom-preview h4,
+.custom-preview h5,
+.custom-preview h6 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.custom-preview p {
+    margin-bottom: 1rem;
+}
+
+.custom-preview code {
+    /* background-color: var(--hover-color); */
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+.custom-preview pre {
+    /* background-color: var(--hover-color); */
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.custom-preview blockquote {
+    /* border-left: 4px solid var(--primary-color); */
+    padding-left: 15px;
+    margin: 1rem 0;
+    font-style: italic;
+}
+
+.custom-preview ul,
+.custom-preview ol {
+    padding-left: 20px;
+    margin-bottom: 1rem;
+}
+
+.custom-preview table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.custom-preview th,
+.custom-preview td {
+    border: 1px solid var(--hover-color);
+    padding: 8px;
+    text-align: left;
+}
+
+.custom-preview th {
+    background-color: var(--hover-color);
+    font-weight: bold;
+}
+
 .note-content-header {
     justify-content: center;
     display: flex;
@@ -56,6 +191,15 @@
     color: var(--black-text-color) !important;
 }
 
+/* Ajustement de la largeur de CodeMirror en mode côte à côte */
+.editor-container.side-by-side-active .CodeMirror {
+    width: 100% !important;
+}
+
+.editor-container:not(.side-by-side-active) .CodeMirror {
+    width: 100% !important;
+}
+
 .editor-toolbar {
     padding: 4px 6px !important;
     height: auto !important;
@@ -84,8 +228,81 @@
     width: auto !important;
 }
 
+/* Style pour le bouton actif (side-by-side) */
+.editor-toolbar button.active {
+    background: var(--primary-color) !important;
+    color: white !important;
+}
+
 .editor-preview {
     background-color: var(--background2-color) !important;
+    color: var(--black-text-color) !important;
+    padding: 10px !important;
+    border-radius: 8px !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    line-height: 1.6 !important;
+}
+
+/* Styles pour les éléments de la preview simple d'EasyMDE */
+.editor-preview h1,
+.editor-preview h2,
+.editor-preview h3,
+.editor-preview h4,
+.editor-preview h5,
+.editor-preview h6 {
+    margin-top: 1rem !important;
+    margin-bottom: 0.5rem !important;
+    font-weight: bold !important;
+    color: var(--primary-color) !important;
+}
+
+.editor-preview p {
+    margin-bottom: 1rem !important;
+}
+
+.editor-preview code {
+    background-color: var(--hover-color) !important;
+    padding: 2px 4px !important;
+    border-radius: 3px !important;
+    font-family: monospace !important;
+}
+
+.editor-preview pre {
+    background-color: var(--hover-color) !important;
+    padding: 10px !important;
+    border-radius: 5px !important;
+    overflow-x: auto !important;
+}
+
+.editor-preview blockquote {
+    border-left: 4px solid var(--primary-color) !important;
+    padding-left: 15px !important;
+    margin: 1rem 0 !important;
+    font-style: italic !important;
+}
+
+.editor-preview ul,
+.editor-preview ol {
+    padding-left: 20px !important;
+    margin-bottom: 1rem !important;
+}
+
+.editor-preview table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    margin-bottom: 1rem !important;
+}
+
+.editor-preview th,
+.editor-preview td {
+    border: 1px solid var(--hover-color) !important;
+    padding: 8px !important;
+    text-align: left !important;
+}
+
+.editor-preview th {
+    background-color: var(--hover-color) !important;
+    font-weight: bold !important;
 }
 
 .CodeMirror-scroll {
@@ -95,6 +312,29 @@
 .CodeMirror-vscrollbar {
     scrollbar-color: var(--hover-color) var(--background2-color);
     scrollbar-width: thin;
+}
+
+/* Scrollbar pour la preview simple d'EasyMDE */
+.editor-preview {
+    scrollbar-color: var(--hover-color) var(--background2-color) !important;
+    scrollbar-width: thin !important;
+}
+
+.editor-preview::-webkit-scrollbar {
+    width: 8px !important;
+}
+
+.editor-preview::-webkit-scrollbar-track {
+    background: var(--background2-color) !important;
+}
+
+.editor-preview::-webkit-scrollbar-thumb {
+    background: var(--hover-color) !important;
+    border-radius: 4px !important;
+}
+
+.editor-preview::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color) !important;
 }
 
 .cm-header {
