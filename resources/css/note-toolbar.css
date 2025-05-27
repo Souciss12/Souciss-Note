@@ -15,10 +15,10 @@
 }
 
 .btn-toolbar {
-    background-color: #A78BFA;
+    background-color: var(--secondary-color);
     margin-left: 10px;
     border: none;
-    color: #F5F3FF;
+    color: var(--white-text-color);
     font-size: 1rem;
     height: 26px;
     width: 26px;
@@ -28,8 +28,8 @@
 }
 
 .btn-toolbar:hover {
-    background-color: #DDD6FE;
-    color: #1F2937;
+    background-color: var(--hover-color);
+    color: var(--black-text-color);
     cursor: pointer;
 }
 
@@ -42,7 +42,7 @@
 }
 
 .toolbar-url {
-    background-color: #DDD6FE;
+    background-color: var(--hover-color);
     padding: 0px 5px;
     border-radius: 4px;
     height: 28px;
@@ -54,4 +54,5 @@
 .url {
     display: flex;
     align-items: center;
+    color: var(--black-text-color);
 }

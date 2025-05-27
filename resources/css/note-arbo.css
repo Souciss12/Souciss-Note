@@ -2,12 +2,12 @@
     padding: 0px 5px 10px 5px;
     max-height: calc(100vh - 78px);
     min-width: 100%;
-    color: #1F2937;
+    color: var(--black-text-color);
     overflow: scroll;
     overflow-x: hidden;
 
     scrollbar-width: thin;
-    scrollbar-color: #DDD6FE #F5F3FF;
+    scrollbar-color: var(--hover-color) var(--background1-color);
 }
 
 .folder {
@@ -36,8 +36,8 @@
 .note:hover,
 .folder-header:hover {
     cursor: pointer;
-    background-color: #DDD6FE;
-    color: #1F2937;
+    background-color: var(--hover-color);
+    color: var(--black-text-color);
 }
 
 .folder-icon,
@@ -55,8 +55,8 @@
 }
 
 .active {
-    background-color: #A78BFA;
-    color: #F5F3FF;
+    background-color: var(--secondary-color);
+    color: var(--white-text-color);
 }
 
 .folder-header {
@@ -79,7 +79,7 @@
     align-content: center;
     font-size: 0.9em;
     margin-right: 2px;
-    color: #1F2937;
+    color: var(--black-text-color);
     display: none;
     border: none;
 }
@@ -91,7 +91,7 @@
 
 .btn-delete-folder:hover,
 .btn-delete-note:hover {
-    color: #A78BFA;
+    color: var(--secondary-color);
 }
 
 .btn-delete-note,
@@ -101,7 +101,7 @@
     align-content: center;
     font-size: 0.9em;
     margin-right: 8px;
-    color: #1F2937;
+    color: var(--black-text-color);
     display: none;
     border: none;
 }
@@ -150,7 +150,7 @@
 
 .add-icon {
     margin-right: 5px;
-    color: #1F2937;
+    color: var(--black-text-color);
 
     cursor: pointer;
     text-align: center;
@@ -160,7 +160,7 @@
 }
 
 .add-icon:hover {
-    color: #A78BFA;
+    color: var(--secondary-color);
 }
 
 .folder-header:hover .add-icon,
@@ -179,17 +179,17 @@
 }
 
 .context-menu-item:hover {
-    background: #DDD6FE;
-    color: #1F2937;
+    background: var(--hover-color);
+    color: var(--black-text-color);
 }
 
 .add-menu {
     display: none;
     position: absolute;
     z-index: 1000;
-    background: #F5F3FF;
+    background: var(--background1-color);
     border-radius: 4px;
-    border: 1px solid #DDD6FE;
+    border: 1px solid var(--hover-color);
     min-width: 120px;
 }
 

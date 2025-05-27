@@ -12,7 +12,16 @@
     @vite(['resources/css/app.css'])
 </head>
 
-<body>
+<body
+    style="
+    --primary-color: {{ $colors['primary_color'] ?? '#8B5CF6' }};
+    --secondary-color: {{ $colors['secondary_color'] ?? '#A78BFA' }};
+    --hover-color: {{ $colors['hover_color'] ?? '#DDD6FE' }};
+    --background1-color: {{ $colors['background1_color'] ?? '#F5F3FF' }};
+    --background2-color: {{ $colors['background2_color'] ?? '#FFFFFF' }};
+    --black-text-color: {{ $colors['black_text_color'] ?? '#1F2937' }};
+    --white-text-color: {{ $colors['white_text_color'] ?? '#F5F3FF' }}; background-color: var(--background2-color);
+">
     @include('partials/header')
     @yield('content')
     @include('partials/script')

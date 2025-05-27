@@ -1,5 +1,5 @@
 .note-content {
-    background-color: #FFFFFF;
+    background-color: var(--background2-color);
     border-radius: 10px;
     padding: 20px;
 }
@@ -15,6 +15,13 @@
     border: none;
     outline: none;
     resize: none;
+
+    background-color: var(--background2-color);
+    color: var(--black-text-color);
+}
+
+.fa {
+    color: var(--black-text-color);
 }
 
 /* .note-content-body {
@@ -44,6 +51,11 @@
     box-shadow: none !important;
 }
 
+.CodeMirror {
+    background-color: var(--background2-color) !important;
+    color: var(--black-text-color) !important;
+}
+
 .editor-toolbar {
     padding: 4px 6px !important;
     height: auto !important;
@@ -62,7 +74,7 @@
     font-size: 14px !important;
     line-height: 1 !important;
     height: auto !important;
-    background: #DDD6FE !important;
+    background: var(--hover-color) !important;
     border: 1px solid #ccc !important;
     border-radius: 4px !important;
     display: inline-flex !important;
@@ -77,7 +89,7 @@
 }
 
 .CodeMirror-vscrollbar {
-    scrollbar-color: #DDD6FE #FFFFFF;
+    scrollbar-color: var(--hover-color) var(--background2-color);
     scrollbar-width: thin;
 }
 

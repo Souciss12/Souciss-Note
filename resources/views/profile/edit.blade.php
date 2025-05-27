@@ -31,30 +31,26 @@
 
 @push('styles')
     <style>
-        .souciss-title {
-            color: #8B5CF6;
-        }
-
         .card {
             border: 1px solid #c4c4c4;
-            background-color: #F5F3FF;
+            background-color: var(--background1-color);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             border-radius: 12px;
             padding: 24px;
         }
 
         .form-section-title {
-            color: #8B5CF6;
+            color: var(--secondary-color);
             margin-bottom: 1rem;
         }
 
         .btn-violet {
-            background-color: #8B5CF6;
+            background-color: var(--secondary-color);
             color: white;
         }
 
         .btn-violet:hover {
-            background-color: #7C3AED;
+            background-color: var(--primary-color);
         }
     </style>
 @endpush

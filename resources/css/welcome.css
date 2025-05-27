@@ -2,24 +2,24 @@
     border-radius: 18px;
     box-shadow: 0 8px 32px 0 rgba(139, 92, 246, 0.10);
     max-width: 600px;
-    background: #F5F3FF;
+    background: var(--background1-color);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .btn-violet {
-    background-color: #A78BFA;
-    color: #F5F3FF;
+    background-color: var(--secondary-color);
+    color: var(--white-text-color);
 }
 
 .btn-violet:hover {
-    background-color: #8B5CF6;
-    color: #fff;
+    background-color: var(--primary-color);
+    color: var(--white-text-color);
 }
 
 .souciss-title {
-    color: #8B5CF6;
+    color: var(--primary-color);
     font-size: 2.5rem;
     font-weight: 600;
 }

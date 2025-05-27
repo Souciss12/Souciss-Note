@@ -18,24 +18,24 @@
 }
 
 .note-bg {
-    background-color: #F3F2F8;
+    background-color: var(--background1-color);
     padding: 15px 0px 15px 0px;
     max-height: 100%;
 }
 
 .arbo-bg {
-    background-color: #F5F3FF;
+    background-color: var(--background1-color);
     border-right: 2px solid #A3A3A3;
 }
 
 .toolbar-bg {
-    background-color: #F5F3FF;
+    background-color: var(--background1-color);
     border-bottom: 2px solid #A3A3A3;
 }
 
 .search-bg {
     height: 100%;
-    background-color: #F5F3FF;
+    background-color: var(--background1-color);
     border-bottom: 2px solid #A3A3A3;
     border-right: 2px solid #A3A3A3;
 }

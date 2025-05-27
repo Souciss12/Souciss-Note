@@ -7,11 +7,11 @@
 }
 
 .add-icon-root {
-    background-color: #A78BFA;
+    background-color: var(--secondary-color);
     border-radius: 4px;
     margin-left: 10px;
     border: none;
-    color: #F5F3FF;
+    color: var(--white-text-color);
     font-size: 1.5rem;
     height: 23px;
     width: 23px;
@@ -27,7 +27,7 @@
 }
 
 .add-icon-root:hover {
-    background-color: #DDD6FE;
-    color: #1F2937;
+    background-color: var(--hover-color);
+    color: var(--black-text-color);
     cursor: pointer;
 }

@@ -60,6 +60,6 @@
 @endif
 <style>
     .edit-title {
-        color: #8B5CF6
+        color: var(--secondary-color);
     }
 </style>

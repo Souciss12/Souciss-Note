@@ -25,6 +25,7 @@ class ColorController extends Controller
                 'white_text_color' => $request->white_text_color,
             ]
         );
+        return redirect()->route('app-settings');
     }
 
     public function reset()
@@ -35,5 +36,6 @@ class ColorController extends Controller
             ['user_id' => $user->id],
             Color::getDefaultColors()
         );
+        return redirect()->route('app-settings');
     }
 }
