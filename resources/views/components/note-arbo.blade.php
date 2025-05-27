@@ -236,6 +236,9 @@
                                     const noteContent = document.querySelector(
                                         '.note-content-body');
                                     if (noteContent) noteContent.value = '';
+                                    if (window.updateNoteContentContainerVisibility) {
+                                        window.updateNoteContentContainerVisibility();
+                                    }
                                 }
                                 noteElem.remove();
                             } else {

@@ -1,7 +1,7 @@
 @vite(['resources/css/note-toolbar.css'])
 <div class="note-toolbar">
     <div class="toolbar-url">
-        <span class="url">Url de la note</span>
+        <span class="url">/</span>
     </div>
     <div class="btns-toolbar">
         <button class="btn btn-toolbar" id="download-content-btn">
@@ -49,13 +49,13 @@
             const activeNoteId = localStorage.getItem('active_note');
             const urlSpan = document.querySelector('.toolbar-url .url');
             if (!activeNoteId || !urlSpan) {
-                urlSpan.textContent = 'Url de la note';
+                urlSpan.textContent = '/';
                 return;
             }
 
             let noteElem = document.querySelector(`.note[data-note-id="${activeNoteId}"]`);
             if (!noteElem) {
-                urlSpan.textContent = 'Url de la note';
+                urlSpan.textContent = '/';
                 return;
             }
 
@@ -75,7 +75,7 @@
             if (noteName) {
                 path.push(noteName.textContent.trim());
             }
-            urlSpan.textContent = path.length ? path.join('/') : 'Url de la note';
+            urlSpan.textContent = path.length ? path.join('/') : '';
         }
 
         const clearContentBtn = document.getElementById('clear-content-btn');

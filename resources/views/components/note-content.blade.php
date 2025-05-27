@@ -31,6 +31,16 @@
     let easyMDE;
     let isCustomSideBySideActive = false;
 
+    function updateNoteContentContainerVisibility() {
+        const noteContainer = document.querySelector('.note-content');
+        const noteId = localStorage.getItem('active_note');
+        if (!noteId && noteContainer) {
+            noteContainer.style.display = 'none';
+        } else if (noteContainer) {
+            noteContainer.style.display = '';
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         easyMDE = new EasyMDE({
             element: document.getElementById('note-content-body'),
@@ -59,6 +69,7 @@
         });
 
         updateNoteContentNoteId();
+        updateNoteContentContainerVisibility();
         easyMDE.codemirror.on('change', function() {
             const textarea = document.getElementById('note-content-body');
             const currentNoteId = textarea.getAttribute('data-note-id');
@@ -75,14 +86,23 @@
             });
         });
 
+        // Masquer le container si aucune note n'est sélectionnée
+        const noteContainer = document.querySelector('.note-content');
+        const noteId = localStorage.getItem('active_note');
+        if (!noteId && noteContainer) {
+            noteContainer.style.display = 'none';
+        } else if (noteContainer) {
+            noteContainer.style.display = '';
+        }
         window.addEventListener('storage', function(e) {
             if (e.key === 'active_note') {
                 updateNoteContentNoteId();
+                updateNoteContentContainerVisibility();
             }
         });
-
         document.addEventListener('click', function() {
             updateNoteContentNoteId();
+            updateNoteContentContainerVisibility();
         });
     });
 
@@ -139,4 +159,7 @@
             document.getElementById('note-content-body').value = content || '';
         }
     };
+
+    // Rends la fonction accessible globalement pour l'appeler depuis d'autres scripts
+    window.updateNoteContentContainerVisibility = updateNoteContentContainerVisibility;
 </script>
