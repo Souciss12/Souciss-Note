@@ -32,7 +32,6 @@
     let isCustomSideBySideActive = false;
 
     document.addEventListener('DOMContentLoaded', function() {
-        // Configuration personnalisée d'EasyMDE
         easyMDE = new EasyMDE({
             element: document.getElementById('note-content-body'),
             spellChecker: false,
@@ -53,7 +52,6 @@
             renderingConfig: {
                 codeSyntaxHighlighting: true
             },
-            // Désactiver le mode plein écran par défaut
             shortcuts: {
                 toggleSideBySide: null,
                 toggleFullScreen: null
@@ -88,52 +86,42 @@
         });
     });
 
-    // Fonction pour gérer le mode côte à côte personnalisé
     function toggleCustomSideBySide() {
         const editorContainer = document.getElementById('editor-container');
         const previewWrapper = document.getElementById('preview-wrapper');
         const customPreview = document.getElementById('custom-preview');
 
         if (!isCustomSideBySideActive) {
-            // Activer le mode côte à côte
             editorContainer.classList.add('side-by-side-active');
             previewWrapper.style.display = 'block';
 
-            // Générer et afficher la prévisualisation
             updatePreview();
 
-            // Mettre à jour la prévisualisation en temps réel
             easyMDE.codemirror.on('change', updatePreview);
 
             isCustomSideBySideActive = true;
 
-            // Mettre à jour l'apparence du bouton
             const sideBySideBtn = document.querySelector('.fa-columns').parentElement;
             sideBySideBtn.classList.add('active');
         } else {
-            // Désactiver le mode côte à côte
             editorContainer.classList.remove('side-by-side-active');
             previewWrapper.style.display = 'none';
 
-            // Retirer l'événement de mise à jour
             easyMDE.codemirror.off('change', updatePreview);
 
             isCustomSideBySideActive = false;
 
-            // Mettre à jour l'apparence du bouton
             const sideBySideBtn = document.querySelector('.fa-columns').parentElement;
             sideBySideBtn.classList.remove('active');
         }
     }
 
-    // Fonction pour mettre à jour la prévisualisation
     function updatePreview() {
         if (!isCustomSideBySideActive) return;
 
         const customPreview = document.getElementById('custom-preview');
         const markdownText = easyMDE.value();
 
-        // Utiliser la fonction de rendu d'EasyMDE pour convertir le markdown
         const htmlContent = easyMDE.markdown(markdownText);
         customPreview.innerHTML = htmlContent;
     }
