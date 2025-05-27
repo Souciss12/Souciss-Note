@@ -217,7 +217,7 @@
 
                 const noteId = this.dataset.noteId;
 
-                if (confirm("Voulez-vous vraiment supprimer cette note ?")) {
+                if (confirm("Are you sure you want to delete this note ?")) {
                     fetch(`/notes/${noteId}`, {
                             method: 'DELETE',
                             headers: {
@@ -442,7 +442,7 @@
 
                 const folderId = this.dataset.folderId;
 
-                if (confirm("Voulez-vous vraiment supprimer cette note ?")) {
+                if (confirm("Are you sure you want to delete this folder ?")) {
                     fetch(`/folders/${folderId}`, {
                             method: 'DELETE',
                             headers: {

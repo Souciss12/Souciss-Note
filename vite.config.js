@@ -18,4 +18,8 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        host: '157.26.121.168',
+        port: 5173,
+    },
 });

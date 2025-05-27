@@ -90,6 +90,12 @@
                 if (noteContent) noteContent.value = '';
             }
 
+            if (!confirm(
+                    `Are you sure you want to clear the note ?`
+                )) {
+                return;
+            }
+
             fetch(`/notes/${activeNoteId}/update-content`, {
                     method: 'POST',
                     headers: {
@@ -108,6 +114,16 @@
             e.preventDefault();
             const activeNoteId = localStorage.getItem('active_note');
             if (!activeNoteId) return;
+
+            const noteElem = document.querySelector(`.note[data-note-id="${activeNoteId}"]`);
+            const noteName = noteElem.querySelector('.note-name')?.textContent?.trim();
+
+            if (!confirm(
+                    `Are you sure you want to delete "${noteName}" ?`
+                )) {
+                return;
+            }
+
             fetch(`/notes/${activeNoteId}`, {
                     method: 'DELETE',
                     headers: {
