@@ -84,6 +84,10 @@
     width: auto !important;
 }
 
+.editor-preview {
+    background-color: var(--background2-color) !important;
+}
+
 .CodeMirror-scroll {
     height: calc(100vh - 280px) !important;
 }

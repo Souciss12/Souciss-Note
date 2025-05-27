@@ -108,6 +108,7 @@
             background-color: var(--background1-color);
             border-radius: 6px;
             box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--hover-color);
         }
 
         .btn-color:hover {
