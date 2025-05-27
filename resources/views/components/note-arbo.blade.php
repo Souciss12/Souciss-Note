@@ -251,6 +251,17 @@
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Delete') {
+                const active = document.activeElement;
+                const isTextInput = (
+                    active && (
+                        active.tagName === 'INPUT' ||
+                        active.tagName === 'TEXTAREA' ||
+                        active.isContentEditable
+                    )
+                );
+                if (isTextInput) {
+                    return;
+                }
                 const lastType = localStorage.getItem('last_selected_type');
                 if (lastType === 'note') {
                     const activeNote = document.querySelector('.note.active');
