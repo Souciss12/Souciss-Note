@@ -4,8 +4,8 @@
         <span class="url">Url de la note</span>
     </div>
     <div class="btns-toolbar">
-        <button class="btn btn-toolbar" id="copy-content-btn">
-            <i class="bi bi-copy"></i>
+        <button class="btn btn-toolbar" id="download-content-btn">
+            <i class="bi bi-download"></i>
         </button>
         <button class="btn btn-toolbar" id="clear-content-btn">
             <i class="bi bi-eraser-fill"></i>
@@ -83,11 +83,14 @@
             const activeNoteId = localStorage.getItem('active_note');
             if (!activeNoteId) return;
 
-            const noteContent = document.querySelector('.note-content-body');
-            if (noteContent) {
-                noteContent.value = '';
+            if (window.easyMDE) {
+                window.easyMDE.value('');
+            } else {
+                const noteContent = document.querySelector('.note-content-body');
+                if (noteContent) noteContent.value = '';
+            }
 
-                fetch(`/notes/${activeNoteId}/update-content`, {
+            fetch(`/notes/${activeNoteId}/update-content`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -96,20 +99,99 @@
                     body: JSON.stringify({
                         content: ''
                     })
-                }).catch(error => console.error('Erreur lors de la suppression du contenu:', error));
-            }
+                })
+                .then(() => location.reload())
+                .catch(error => console.error('Erreur lors de la suppression du contenu:', error));
         });
 
-        const copyContentBtn = document.getElementById('copy-content-btn');
-        copyContentBtn.addEventListener('click', function() {
+        deleteForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const activeNoteId = localStorage.getItem('active_note');
+            if (!activeNoteId) return;
+            fetch(`/notes/${activeNoteId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(() => {
+                    localStorage.removeItem('active_note');
+                    location.reload();
+                })
+                .catch(error => console.error('Erreur lors de la suppression de la note:', error));
+        });
+
+        document.getElementById('download-content-btn').addEventListener('click', async () => {
             const activeNoteId = localStorage.getItem('active_note');
             if (!activeNoteId) return;
 
-            const noteContent = document.querySelector('.note-content-body');
-            if (noteContent) {
-                navigator.clipboard.writeText(noteContent.value)
-                    .catch(error => console.error('Erreur lors de la copie du contenu:', error));
+            const title = document.getElementById('note-content-header').value;
+            const content = marked.parse(easyMDE.value());
+
+            const container = Object.assign(document.createElement('div'), {
+                innerHTML: `<h1 style="text-align:center;">${title}</h1><div>${content}</div>`,
+                style: `
+            width: 210mm;
+            padding: 70px;
+            font-family: Verdana, sans-serif;
+            font-size: 12pt;
+            position: fixed;
+            top: -10000px;
+            background: white;
+        `
+            });
+
+            document.body.appendChild(container);
+
+            const images = container.querySelectorAll('img');
+            await Promise.all(Array.from(images).map(img => {
+                return new Promise(resolve => {
+                    if (img.complete) resolve();
+                    else img.onload = img.onerror = resolve;
+                });
+            }));
+
+            try {
+                const canvas = await html2canvas(container, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: false
+                });
+
+                const imgData = canvas.toDataURL('image/png');
+                const {
+                    jsPDF
+                } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pdfWidth = 210;
+                const pdfHeight = 297;
+
+                const imgProps = pdf.getImageProperties(imgData);
+                const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+                let position = 0;
+
+                while (position < imgHeight) {
+                    if (position > 0) pdf.addPage();
+
+                    pdf.addImage(
+                        imgData,
+                        'PNG',
+                        0,
+                        -position,
+                        pdfWidth,
+                        imgHeight
+                    );
+
+                    position += pdfHeight;
+                }
+
+                pdf.save('note.pdf');
+            } finally {
+                document.body.removeChild(container);
             }
         });
+
     });
 </script>
