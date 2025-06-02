@@ -1,5 +1,5 @@
 <div class="folder" data-folder-id="{{ $folder->id }}">
-    <div class="folder-header" draggable="true" data-type="folder" data-id="{{ $folder->id }}">
+    <div class="folder-header" title="Rename : F2" draggable="true" data-type="folder" data-id="{{ $folder->id }}">
         <div class="folder-name">
             <span class="open-icon bi bi-chevron-right"></span>
             <span class="folder-icon">📁</span>
@@ -11,7 +11,7 @@
                 action="{{ route('folder.destroy', $folder->id) }}">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-delete-folder">
+                <button type="submit" title="Delete" class="btn btn-delete-folder">
                     <i class="bi bi-trash-fill"></i>
                 </button>
             </form>
@@ -29,7 +29,8 @@
 
         @foreach ($notes->where('folder_id', $folder->id) as $note)
             <div class="note" data-note-id="{{ $note->id }}">
-                <div class="note-header" draggable="true" data-type="note" data-id="{{ $note->id }}">
+                <div class="note-header" title="Rename : F2" draggable="true" data-type="note"
+                    data-id="{{ $note->id }}">
                     <div>
                         <span class="file-icon">📄</span>
                         <span class="note-name">{{ $note->title }}</span>
@@ -38,7 +39,7 @@
                         action="{{ route('note.destroy', $note->id) }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-delete-note">
+                        <button type="submit" title="Delete" class="btn btn-delete-note">
                             <i class="bi bi-trash-fill"></i>
                         </button>
                     </form>

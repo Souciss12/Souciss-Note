@@ -11,7 +11,7 @@
 
     @foreach ($notes->where('folder_id', null) as $note)
         <div class="note" data-note-id="{{ $note->id }}">
-            <div class="note-header" draggable="true" data-type="note" data-id="{{ $note->id }}">
+            <div class="note-header" title="Rename : F2" draggable="true" data-type="note" data-id="{{ $note->id }}">
                 <div>
                     <span class="file-icon">📄</span>
                     <span class="note-name">{{ $note->title }}</span>
@@ -20,7 +20,7 @@
                     data-note-id="{{ $note->id }}">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-delete-note">
+                    <button type="submit" title="Delete" class="btn btn-delete-note">
                         <i class="bi bi-trash-fill"></i>
                     </button>
                 </form>
@@ -33,11 +33,11 @@
     </div>
 </div>
 <div id="context-menu" class="context-menu add-menu">
-    <div class="context-menu-item add-menu-item d-flex" data-action="add-folder">
+    <div title="Ctrl Shift N" class="context-menu-item add-menu-item d-flex" data-action="add-folder">
         <div class="add-folder-icon">📁</div>
         <div>New folder</div>
     </div>
-    <div class="context-menu-item add-menu-item d-flex" data-action="add-note">
+    <div title="Ctrl Shift M" class="context-menu-item add-menu-item d-flex" data-action="add-note">
         <div class="add-note-icon">📄</div>
         <div>New note</div>
     </div>
