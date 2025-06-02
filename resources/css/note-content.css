@@ -94,6 +94,7 @@
 }
 
 .custom-preview pre {
+    background-color: #eee;
     padding: 10px;
     border-radius: 5px;
     overflow-x: auto;
@@ -238,14 +239,12 @@
 }
 
 .editor-preview code {
-    background-color: var(--hover-color) !important;
     padding: 2px 4px !important;
     border-radius: 3px !important;
     font-family: monospace !important;
 }
 
 .editor-preview pre {
-    background-color: var(--hover-color) !important;
     padding: 10px !important;
     border-radius: 5px !important;
     overflow-x: auto !important;
