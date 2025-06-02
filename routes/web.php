@@ -18,6 +18,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/note', [NoteController::class, 'index'])->name('note.index')->middleware(['auth']);
+Route::get('/notes/search', [NoteController::class, 'search'])->name('note.search')->middleware(['auth']);
 Route::get('/notes/{id}/content', [NoteController::class, 'getContent'])->name('note.content')->middleware(['auth']);
 Route::post('/notes/{id}/update-content', [NoteController::class, 'updateContent'])->name('note.update-content')->middleware(['auth']);
 Route::post('/notes/{id}/update-title', [NoteController::class, 'updateTitle'])->name('note.update-title')->middleware(['auth']);

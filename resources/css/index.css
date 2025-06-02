@@ -30,12 +30,10 @@
 
 .toolbar-bg {
     background-color: var(--background1-color);
-    border-bottom: 2px solid #A3A3A3;
 }
 
 .search-bg {
     height: 100%;
     background-color: var(--background1-color);
-    border-bottom: 2px solid #A3A3A3;
     border-right: 2px solid #A3A3A3;
 }

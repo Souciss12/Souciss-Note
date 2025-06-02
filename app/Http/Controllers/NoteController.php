@@ -17,6 +17,28 @@ class NoteController extends Controller
         return view('note.index', ['notes' => $notes, 'folders' => $folders]);
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->get('q');
+
+        if (empty($query)) {
+            return response()->json(['notes' => []]);
+        }
+
+        $notes = Note::search($query, Auth::user()->id);
+
+        return response()->json([
+            'notes' => $notes->map(function ($note) {
+                return [
+                    'id' => $note->id,
+                    'title' => $note->title,
+                    'folder_id' => $note->folder_id,
+                    'folder_name' => $note->folder ? $note->folder->name : null,
+                ];
+            })
+        ]);
+    }
+
     public function getContent(string $id)
     {
         $note = Note::where('id', $id)

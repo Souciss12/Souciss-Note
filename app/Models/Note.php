@@ -26,8 +26,14 @@ class Note extends Model
         return $this->belongsTo(Folder::class, 'folder_id');
     }
 
-    public function tags()
+    public static function search($query, $userId)
     {
-        return $this->belongsToMany(Tag::class, 'note_tag', 'note_id', 'tag_id');
+        return self::where('user_id', $userId)
+            ->where(function ($q) use ($query) {
+                $q->where('title', 'LIKE', "%{$query}%")
+                    ->orWhere('content', 'LIKE', "%{$query}%");
+            })
+            ->orderBy('title', 'asc')
+            ->get();
     }
 }
