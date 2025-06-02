@@ -1,8 +1,7 @@
 @vite(['resources/css/note-search.css'])
 <div class="note-search">
     <div class="search-container">
-        <input type="text" id="search-input" class="search-input" placeholder="Rechercher des notes..."
-            autocomplete="off">
+        <input type="text" id="search-input" class="search-input" placeholder="Research notes..." autocomplete="off">
         <div id="search-results" class="search-results" style="display: none;"></div>
     </div>
     <div class="btns">
