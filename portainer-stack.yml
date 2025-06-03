@@ -10,9 +10,10 @@ services:
       - /mnt/datas/docker/soucissnote/storage:/var/www/storage
       - /mnt/datas/docker/soucissnote/bootstrap/cache:/var/www/bootstrap/cache
       - /mnt/datas/docker/soucissnote/database:/var/www/database
-      - /mnt/datas/docker/soucissnote/.env:/var/www/.env
+      - /mnt/datas/docker/soucissnote/.env:/var/www/.env    
     environment:
       - APP_ENV=production
+      - APP_DEBUG=true
       - APP_KEY=${APP_KEY:-base64:your_app_key_here}
       - APP_URL=${APP_URL:-http://localhost:25565}
       - SERVER_PORT=9000
