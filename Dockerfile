@@ -56,6 +56,6 @@ RUN chown -R www-data:www-data /var/www \
 
 EXPOSE 9000
 
-# Utilisez le script d'entrypoint pour initialiser et php-fpm pour exécuter
+# Utilisez le script d'entrypoint pour initialiser et php artisan serve pour exécuter
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
-CMD ["php-fpm"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=9000"]
