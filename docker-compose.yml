@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: soucissnote
+    working_dir: /var/www
+    ports:
+      - "25565:9000"
+    volumes:
+      - ./:/var/www
+      - ./storage:/var/www/storage
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+
+volumes:
+  storage:
