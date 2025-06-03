@@ -29,11 +29,20 @@ mkdir -p bootstrap/cache
 if [ ! -f database/database.sqlite ]; then
     echo "Création de la base de données SQLite..."
     touch database/database.sqlite
+    chmod 666 database/database.sqlite
 fi
 
-# Exécuter les migrations (toujours pour s'assurer que toutes les tables existent)
+# S'assurer que la base de données a les bonnes permissions
+chmod 666 database/database.sqlite
+chown www-data:www-data database/database.sqlite
+
+# Initialiser la table des migrations
+echo "Initialisation de la table des migrations..."
+php artisan migrate:install --no-interaction || true
+
+# Exécuter les migrations
 echo "Vérification de l'état des migrations..."
-php artisan migrate:status
+php artisan migrate:status || true
 
 echo "Exécution des migrations..."
 php artisan migrate --force

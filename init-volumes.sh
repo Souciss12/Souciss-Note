@@ -44,6 +44,7 @@ fi
 
 # Définir les permissions appropriées
 chmod -R 775 /mnt/datas/docker/soucissnote
+chmod 666 /mnt/datas/docker/soucissnote/database/database.sqlite
 echo "Permissions mises à jour"
 
 echo "Initialisation des volumes terminée"
