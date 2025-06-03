@@ -29,21 +29,26 @@ mkdir -p bootstrap/cache
 if [ ! -f database/database.sqlite ]; then
     echo "Création de la base de données SQLite..."
     touch database/database.sqlite
-    
-    # Exécuter les migrations
-    echo "Exécution des migrations..."
-    php artisan migrate --force
-    
-    # Exécuter les seeders si nécessaire
-    echo "Exécution des seeders..."
-    php artisan db:seed --force || true
 fi
 
-# Optimiser l'application
-php artisan optimize:clear
-php artisan config:cache
-php artisan route:cache
+# Exécuter les migrations (toujours pour s'assurer que toutes les tables existent)
+echo "Exécution des migrations..."
+php artisan migrate --force
+
+# Exécuter les seeders si nécessaire
+echo "Exécution des seeders..."
+php artisan db:seed --force || true
+
+# Exécuter uniquement les commandes de cache qui ne dépendent pas de la base de données
+echo "Optimisation de l'application..."
+php artisan view:clear
+php artisan route:clear
+php artisan config:clear
+
+# Recréer le cache après les migrations
 php artisan view:cache
+php artisan route:cache
+php artisan config:cache
 
 # Mettre à jour les permissions pour les dossiers de stockage
 chmod -R 775 storage bootstrap/cache database
