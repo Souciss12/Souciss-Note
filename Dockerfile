@@ -37,6 +37,10 @@ RUN npm ci --only=production
 # Copy application code
 COPY . .
 
+# Make the entrypoint script executable
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
+
 # Build assets
 RUN npm run build
 
@@ -52,4 +56,6 @@ RUN chown -R www-data:www-data /var/www \
 
 EXPOSE 9000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=9000"]
+# Utilisez le script d'entrypoint pour initialiser et php-fpm pour exécuter
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
+CMD ["php-fpm"]
