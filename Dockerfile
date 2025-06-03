@@ -28,6 +28,19 @@ WORKDIR /var/www
 # Copier tout le code source d'abord
 COPY . .
 
+# Faire une copie de sauvegarde des migrations
+RUN mkdir -p /var/www/database/migrations-src && \
+    if [ -d /var/www/database/migrations ] && [ -n "$(ls -A /var/www/database/migrations 2>/dev/null)" ]; then \
+    cp -r /var/www/database/migrations/* /var/www/database/migrations-src/ && \
+    echo "Sauvegarde des migrations effectuée" ; \
+    else \
+    echo "Aucune migration à sauvegarder, vérification des migrations Laravel de base" ; \
+    if [ -d /var/www/vendor/laravel/framework/database/migrations ]; then \
+    cp -r /var/www/vendor/laravel/framework/database/migrations/* /var/www/database/migrations-src/ && \
+    echo "Sauvegarde des migrations Laravel de base effectuée" ; \
+    fi ; \
+    fi
+
 # Installer les dépendances Composer
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader --no-interaction
 
@@ -36,7 +49,8 @@ RUN npm ci
 
 # Make the entrypoint script executable
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/docker-entrypoint
+COPY troubleshoot.sh /var/www/troubleshoot.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint /var/www/troubleshoot.sh
 
 # Build assets
 RUN npm run build

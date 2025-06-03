@@ -8,7 +8,7 @@ mkdir -p /mnt/datas/docker/soucissnote/storage/framework/sessions
 mkdir -p /mnt/datas/docker/soucissnote/storage/framework/views
 mkdir -p /mnt/datas/docker/soucissnote/storage/logs
 mkdir -p /mnt/datas/docker/soucissnote/bootstrap/cache
-mkdir -p /mnt/datas/docker/soucissnote/database
+mkdir -p /mnt/datas/docker/soucissnote/database/migrations
 
 # Créer un fichier .env de base
 if [ ! -f /mnt/datas/docker/soucissnote/.env ]; then
@@ -46,5 +46,14 @@ fi
 chmod -R 775 /mnt/datas/docker/soucissnote
 chmod 666 /mnt/datas/docker/soucissnote/database/database.sqlite
 echo "Permissions mises à jour"
+
+# Copier les migrations depuis l'image Docker si les migrations n'existent pas dans le volume
+if [ -z "$(ls -A /mnt/datas/docker/soucissnote/database/migrations 2>/dev/null)" ]; then
+    echo "Préparation des migrations pour le volume..."
+    # Cette commande doit être exécutée lorsque le conteneur est déjà construit
+    # Utiliser docker cp pour extraire les migrations depuis le conteneur
+    echo "NOTE: Pour copier les migrations de l'image vers le volume, exécuter:"
+    echo "docker cp soucissnote:/var/www/database/migrations-src/. /mnt/datas/docker/soucissnote/database/migrations/"
+fi
 
 echo "Initialisation des volumes terminée"
