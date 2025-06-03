@@ -32,8 +32,23 @@ if [ ! -f database/database.sqlite ]; then
 fi
 
 # Exécuter les migrations (toujours pour s'assurer que toutes les tables existent)
+echo "Vérification de l'état des migrations..."
+php artisan migrate:status
+
 echo "Exécution des migrations..."
 php artisan migrate --force
+
+# Vérifier que les tables critiques existent
+echo "Vérification des tables critiques..."
+tables=("sessions" "cache" "users" "notes" "folders")
+for table in "${tables[@]}"; do
+    echo "Vérification de la table: $table"
+    if ! sqlite3 database/database.sqlite "SELECT name FROM sqlite_master WHERE type='table' AND name='$table';" | grep -q "$table"; then
+        echo "ATTENTION: La table $table n'existe pas après les migrations!"
+    else
+        echo "OK: La table $table existe."
+    fi
+done
 
 # Exécuter les seeders si nécessaire
 echo "Exécution des seeders..."

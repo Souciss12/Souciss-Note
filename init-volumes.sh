@@ -30,7 +30,7 @@ BROADCAST_DRIVER=log
 CACHE_DRIVER=file
 FILESYSTEM_DISK=local
 QUEUE_CONNECTION=sync
-SESSION_DRIVER=file
+SESSION_DRIVER=database
 SESSION_LIFETIME=120
 EOF
     echo "Fichier .env créé avec succès"
