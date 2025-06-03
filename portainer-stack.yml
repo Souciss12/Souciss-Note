@@ -7,19 +7,12 @@ services:
     ports:
       - "25565:9000"    
     volumes:
-      - soucissnote_storage:/var/www/storage
-      - soucissnote_bootstrap:/var/www/bootstrap/cache
+      - /mnt/datas/docker/soucissnote/storage:/var/www/storage
+      - /mnt/datas/docker/soucissnote/bootstrap_cache:/var/www/bootstrap/cache
     environment:
       - APP_ENV=production
-      - APP_DEBUG=true  # Temporairement activé pour voir les erreurs
       - APP_KEY=${APP_KEY:-base64:your_app_key_here}
       - APP_URL=${APP_URL:-http://localhost:25565}
       - SERVER_PORT=9000
       - SERVER_HOST=0.0.0.0
     restart: unless-stopped
-
-volumes:
-  soucissnote_storage:
-    driver: local
-  soucissnote_bootstrap:
-    driver: local
