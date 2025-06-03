@@ -4,6 +4,13 @@ set -e
 # Attendre que le système de fichiers soit prêt
 echo "Initialisation de l'application Laravel..."
 
+# Vérifier que vendor/autoload.php existe
+if [ ! -f vendor/autoload.php ]; then
+    echo "ERROR: vendor/autoload.php not found! Composer dependencies are not properly installed."
+    echo "Running composer install now..."
+    composer install --no-dev --optimize-autoloader --no-interaction
+fi
+
 # Vérifier si la clé d'application existe, sinon en générer une nouvelle
 if [ -z "$APP_KEY" ]; then
     php artisan key:generate

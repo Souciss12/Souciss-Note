@@ -24,18 +24,14 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Copy package files first for better Docker layer caching
-COPY package*.json ./
-COPY composer.json composer.lock ./
-
-# Install dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts || true
-
-# Install npm dependencies including dev dependencies needed for build
-RUN npm ci
-
-# Copy application code
+# Copier tout le code source d'abord
 COPY . .
+
+# Installer les dépendances Composer
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Installer les dépendances npm
+RUN npm ci
 
 # Make the entrypoint script executable
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
