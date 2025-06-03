@@ -29,7 +29,8 @@ COPY package*.json ./
 COPY composer.json composer.lock ./
 
 # Install dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts || true
+
 RUN npm ci --only=production
 
 # Copy application code
