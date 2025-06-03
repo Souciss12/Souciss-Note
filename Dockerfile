@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     npm \
     sqlite3 \
     libsqlite3-dev \
+    && ln -s /usr/bin/nodejs /usr/bin/node \
     && docker-php-ext-install pdo pdo_sqlite mbstring exif pcntl bcmath gd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
