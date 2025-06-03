@@ -34,12 +34,11 @@ RUN mkdir -p /var/www/database/migrations-src && \
     cp -r /var/www/database/migrations/* /var/www/database/migrations-src/ && \
     echo "Sauvegarde des migrations effectuée" ; \
     else \
-    echo "Aucune migration à sauvegarder, vérification des migrations Laravel de base" ; \
-    if [ -d /var/www/vendor/laravel/framework/database/migrations ]; then \
-    cp -r /var/www/vendor/laravel/framework/database/migrations/* /var/www/database/migrations-src/ && \
-    echo "Sauvegarde des migrations Laravel de base effectuée" ; \
-    fi ; \
-    fi
+    echo "Aucune migration à sauvegarder" ; \
+    fi && \
+    # Garantir que tous les fichiers de migration sont copiés dans migrations-src
+    find /var/www -name "*.php" -path "*/migrations/*" -exec cp {} /var/www/database/migrations-src/ \; 2>/dev/null || true && \
+    echo "Fichiers de migration copiés depuis le système de fichiers."
 
 # Installer les dépendances Composer
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader --no-interaction
@@ -50,7 +49,8 @@ RUN npm ci
 # Make the entrypoint script executable
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY troubleshoot.sh /var/www/troubleshoot.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint /var/www/troubleshoot.sh
+COPY fix-colors.sh /var/www/fix-colors.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint /var/www/troubleshoot.sh /var/www/fix-colors.sh
 
 # Build assets
 RUN npm run build

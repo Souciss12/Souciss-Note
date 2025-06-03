@@ -115,8 +115,59 @@ else
     echo "Table migrations existante, OK."
 fi
 
-# 4. Exécution des migrations
-echo "4. Tentative d'exécution des migrations..."
+# 4. Vérification et réparation de la table colors
+echo "4. Vérification de la table colors..."
+if ! sqlite3 database/database.sqlite "SELECT name FROM sqlite_master WHERE type='table' AND name='colors';" | grep -q "colors"; then
+    echo "Table colors manquante, création..."
+    sqlite3 database/database.sqlite "CREATE TABLE IF NOT EXISTS colors (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        colors TEXT NOT NULL,
+        created_at TIMESTAMP NULL,
+        updated_at TIMESTAMP NULL,
+        FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+    );"
+    sqlite3 database/database.sqlite "CREATE INDEX IF NOT EXISTS colors_user_id_index ON colors (user_id);"
+    echo "Table colors créée."
+else
+    echo "Table colors existante, OK."
+fi
+
+# 5. Création de la migration pour colors si elle n'existe pas
+echo "5. Vérification de la migration pour colors..."
+if [ ! -f database/migrations/0001_01_01_000004_create_colors_table.php ]; then
+    echo "Migration pour colors manquante, création..."
+    cat > database/migrations/0001_01_01_000004_create_colors_table.php << 'EOF'
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('colors', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->text('colors');
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('colors');
+    }
+};
+EOF
+    echo "Migration pour colors créée."
+else
+    echo "Migration pour colors existante, OK."
+fi
+
+# 6. Exécution des migrations
+echo "6. Tentative d'exécution des migrations..."
 php artisan migrate --force || echo "Impossible d'exécuter les migrations automatiquement."
 
 # Vérification finale

@@ -75,11 +75,29 @@ echo "Vérification de l'état des migrations..."
 php artisan migrate:status --no-interaction || echo "Impossible de vérifier le statut des migrations"
 
 echo "Exécution des migrations avec debug..."
-php artisan migrate --force --verbose || echo "Impossible d'exécuter les migrations mais on continue"
+php artisan migrate --force --verbose || echo "Impossible d'exécuter les migrations via artisan"
+
+# Si artisan migrate échoue, essayer de copier les fichiers de migrations manuellement
+echo "Vérification des fichiers de migration..."
+if [ -d /var/www/database/migrations ]; then
+    migration_count=$(ls -la /var/www/database/migrations/ | wc -l)
+    if [ "$migration_count" -lt 5 ]; then
+        echo "Nombre insuffisant de fichiers de migration ($migration_count), restauration des migrations..."
+        # Copier toutes les migrations disponibles depuis le code source
+        if [ -d /var/www/database ]; then
+            find /var/www -name "*.php" -path "*/migrations/*" -exec cp {} /var/www/database/migrations/ \; 2>/dev/null || true
+            echo "Migrations copiées depuis le système de fichiers."
+        fi
+        
+        # Tenter à nouveau d'exécuter les migrations
+        echo "Nouvelle tentative d'exécution des migrations..."
+        php artisan migrate --force --verbose || echo "Échec de l'exécution des migrations"
+    fi
+fi
 
 # Vérifier que les tables critiques existent
 echo "Vérification des tables critiques..."
-for table in sessions cache users notes folders; do
+for table in sessions cache users notes folders colors; do
     echo "Vérification de la table: $table"
     if ! sqlite3 database/database.sqlite "SELECT name FROM sqlite_master WHERE type='table' AND name='$table';" | grep -q "$table"; then
         echo "ATTENTION: La table $table n'existe pas après les migrations!"
@@ -106,6 +124,18 @@ for table in sessions cache users notes folders; do
                     value TEXT NOT NULL,
                     expiration INTEGER NOT NULL
                 );"
+                ;;
+            colors)
+                echo "Tentative de création manuelle de la table colors..."
+                sqlite3 database/database.sqlite "CREATE TABLE IF NOT EXISTS colors (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    colors TEXT NOT NULL,
+                    created_at TIMESTAMP NULL,
+                    updated_at TIMESTAMP NULL,
+                    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+                );"
+                sqlite3 database/database.sqlite "CREATE INDEX IF NOT EXISTS colors_user_id_index ON colors (user_id);"
                 ;;
         esac
     else

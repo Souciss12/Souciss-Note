@@ -10,28 +10,75 @@ fi
 # Créer le répertoire cible s'il n'existe pas
 mkdir -p /mnt/datas/docker/soucissnote/database/migrations
 
-# Copier les migrations depuis le conteneur vers le volume
-echo "Copie des migrations depuis le conteneur..."
-docker cp soucissnote:/var/www/database/migrations-src/. /mnt/datas/docker/soucissnote/database/migrations/
+# Arrêter le conteneur pour éviter les problèmes de verrouillage de fichiers
+echo "Arrêt temporaire du conteneur..."
+docker stop soucissnote
 
-# Vérifier que la copie a réussi
+# Copier les fichiers sources de l'application
+echo "Copie des fichiers sources de l'application..."
+docker run --rm -v /mnt/datas/docker/soucissnote:/backup soucissnote:latest tar -cf /backup/app_source.tar /var/www
+
+# Démarrer le conteneur
+echo "Redémarrage du conteneur..."
+docker start soucissnote
+
+# Extraire les migrations
+echo "Extraction des migrations depuis la sauvegarde..."
+tar -xf /mnt/datas/docker/soucissnote/app_source.tar -C /tmp var/www/database/migrations --strip-components=3
+cp -r /tmp/migrations/* /mnt/datas/docker/soucissnote/database/migrations/
+
+# Vérifier que les fichiers sont présents
 if [ -n "$(ls -A /mnt/datas/docker/soucissnote/database/migrations 2>/dev/null)" ]; then
-    echo "Migrations copiées avec succès"
+    echo "Migrations extraites avec succès"
     echo "Contenu du répertoire des migrations:"
     ls -la /mnt/datas/docker/soucissnote/database/migrations/
-else
-    echo "ERREUR: Aucune migration n'a été copiée"
-    echo "Essai de copie directe des migrations du conteneur..."
-    docker cp soucissnote:/var/www/database/migrations/. /mnt/datas/docker/soucissnote/database/migrations/
     
-    # Vérifier à nouveau
-    if [ -n "$(ls -A /mnt/datas/docker/soucissnote/database/migrations 2>/dev/null)" ]; then
-        echo "Migrations copiées avec succès depuis le répertoire principal"
-    else
-        echo "ÉCHEC: Impossible de copier les migrations"
-    fi
+    # Copier également la migration de la table colors
+    cp -f /mnt/datas/docker/soucissnote/database/migrations/0001_01_01_000004_create_colors_table.php /mnt/datas/docker/soucissnote/database/migrations/ 2>/dev/null || echo "Fichier colors déjà présent"
+else
+    echo "ERREUR: Aucune migration n'a été extraite"
+    
+    # Créer au moins les migrations essentielles
+    echo "Création des migrations essentielles manuellement..."
+    cat > /mnt/datas/docker/soucissnote/database/migrations/0001_01_01_000004_create_colors_table.php << 'EOF'
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('colors', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->text('colors');
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('colors');
+    }
+};
+EOF
+    echo "Migration colors créée manuellement"
 fi
 
 # Définir les permissions appropriées
 chmod -R 775 /mnt/datas/docker/soucissnote/database/migrations
+chmod 664 /mnt/datas/docker/soucissnote/database/migrations/*.php
 echo "Permissions mises à jour"
+
+# Redémarrer le conteneur pour appliquer les modifications
+echo "Redémarrage du conteneur pour appliquer les migrations..."
+docker restart soucissnote
+
+# Nettoyer les fichiers temporaires
+rm -f /mnt/datas/docker/soucissnote/app_source.tar
+rm -rf /tmp/migrations
+
+echo "Script terminé. Vérifiez les logs du conteneur pour vous assurer que les migrations ont été appliquées."
+echo "docker logs soucissnote"
