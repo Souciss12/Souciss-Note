@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+# Pour déboguer
+ls -la /var/www/database/migrations/
+
 # Attendre que le système de fichiers soit prêt
 echo "Initialisation de l'application Laravel..."
 
@@ -44,13 +47,12 @@ php artisan migrate:install --no-interaction || true
 echo "Vérification de l'état des migrations..."
 php artisan migrate:status || true
 
-echo "Exécution des migrations..."
-php artisan migrate --force
+echo "Exécution des migrations avec debug..."
+php artisan migrate --force --verbose
 
 # Vérifier que les tables critiques existent
 echo "Vérification des tables critiques..."
-tables=("sessions" "cache" "users" "notes" "folders")
-for table in "${tables[@]}"; do
+for table in sessions cache users notes folders; do
     echo "Vérification de la table: $table"
     if ! sqlite3 database/database.sqlite "SELECT name FROM sqlite_master WHERE type='table' AND name='$table';" | grep -q "$table"; then
         echo "ATTENTION: La table $table n'existe pas après les migrations!"
