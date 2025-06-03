@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: ${IMAGE_NAME:-soucissnote:latest}
+    build: .
     container_name: soucissnote
     working_dir: /var/www
     ports:
