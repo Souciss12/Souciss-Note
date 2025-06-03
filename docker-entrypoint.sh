@@ -21,6 +21,10 @@ if [ ! -f .env ]; then
     cp .env.example .env
 fi
 
+# Créer la structure du dossier storage et bootstrap si elle n'existe pas
+mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs storage/app
+mkdir -p bootstrap/cache
+
 # Mettre à jour les permissions pour les dossiers de stockage
 chmod -R 775 storage bootstrap/cache
 chown -R www-data:www-data storage bootstrap/cache
