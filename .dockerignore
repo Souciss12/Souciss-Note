@@ -1,22 +1,33 @@
+# composer & node
 node_modules
-npm-debug.log
+package.json
+package-lock.json
+postcss.config.js
+tailwind.config.js
+vendor
+vite.config.js
+.nyc_output
+
+# docker & git
+docker-compose.yml
+Dockerfile
 .git
 .gitignore
+.gitattributes
 README.md
+
+# env and logs
 .env
-.nyc_output
-coverage
-.DS_Store
+.env.example
 *.log
-vendor
+.DS_Store
 storage/logs/*
 storage/framework/cache/*
 storage/framework/sessions/*
 storage/framework/views/*
 bootstrap/cache/*
 .phpunit.result.cache
+
+# tests & coverage
 tests
-docker
-docker-compose.yml
-Dockerfile
-.dockerignore
+coverage
