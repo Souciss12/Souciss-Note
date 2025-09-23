@@ -8,7 +8,7 @@ COPY php.conf /usr/local/etc/php/conf.d/docker-php.ini
 # Project files
 COPY . /var/www/html
 WORKDIR /var/www/html
-RUN chown -R www-data:www-data database storage bootstrap/cache \
+RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 database storage bootstrap/cache
 
 # Enable .htaccess
