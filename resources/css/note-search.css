@@ -9,7 +9,6 @@
 .search-container {
     position: relative;
     flex: 1;
-    margin-right: 10px;
 }
 
 .search-input {
@@ -103,8 +102,8 @@
     border: none;
     color: var(--white-text-color);
     font-size: 1.5rem;
-    height: 23px;
-    width: 23px;
+    height: 27px;
+    width: 27px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -115,6 +114,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    margin-right: 3px;
 }
 
 .add-icon-root:hover {

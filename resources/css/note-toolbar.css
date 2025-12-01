@@ -46,7 +46,7 @@
     padding: 0px 5px;
     border-radius: 4px;
     height: 28px;
-    min-width: 40%;
+    width: 100%;
     display: flex;
     align-self: center;
 }
